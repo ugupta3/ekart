@@ -1,7 +1,7 @@
 DROP SCHEMA IF EXISTS etanker;
 create SCHEMA etanker;
 USE etanker;
-CREATE TABLE et_address (
+CREATE TABLE ek_address (
   address_id bigint(20)  AUTO_INCREMENT,
   address_line1 varchar(255) NOT NULL,
   address_line2 varchar(255),
@@ -17,7 +17,7 @@ CREATE TABLE et_address (
   state varchar(25),
   PRIMARY KEY (address_id)
   );
-CREATE TABLE et_user_account(
+CREATE TABLE ek_user_account(
     id bigint(12) AUTO_INCREMENT,
     address_id bigint(20),
     phone VARCHAR(12) NOT NULL,
@@ -29,9 +29,9 @@ CREATE TABLE et_user_account(
     created_at datetime DEFAULT NULL,
     updated_at datetime DEFAULT NULL,
     PRIMARY KEY (id),
-    CONSTRAINT FOREIGN KEY (address_id) REFERENCES et_address(address_id)
+    CONSTRAINT FOREIGN KEY (address_id) REFERENCES ek_address(address_id)
  );
-CREATE TABLE et_category (
+CREATE TABLE ek_category (
   category_id BIGINT(20) AUTO_INCREMENT,
   category_name VARCHAR(255) NOT NULL,
   active_end_date DATETIME,
@@ -39,51 +39,51 @@ CREATE TABLE et_category (
   PRIMARY KEY (CATEGORY_ID)
  );
 
-CREATE TABLE et_product (
+CREATE TABLE ek_product (
   product_id BIGINT(11) AUTO_INCREMENT,
   product_name VARCHAR(255) ,
   image_url VARCHAR(255),
   manufacturer VARCHAR(255),
   category_id BIGINT(20),
   PRIMARY KEY (product_id),
-  CONSTRAINT  FOREIGN KEY (category_id) REFERENCES et_category (category_id)
+  CONSTRAINT  FOREIGN KEY (category_id) REFERENCES ek_category (category_id)
 );
 
-CREATE TABLE et_inventory (
+CREATE TABLE ek_inventory (
   inventory_id BIGINT(20) AUTO_INCREMENT,
   merchant_id BIGINT(20),
   product_id BIGINT(20),
   quantity_in_hand BIGINT(20) NOT NULL,
   PRIMARY KEY (inventory_id),
-  CONSTRAINT  FOREIGN KEY (merchant_id) REFERENCES et_user_account (id),
-  CONSTRAINT  FOREIGN KEY (product_id) REFERENCES et_product (product_id)
+  CONSTRAINT  FOREIGN KEY (merchant_id) REFERENCES ek_user_account (id),
+  CONSTRAINT  FOREIGN KEY (product_id) REFERENCES ek_product (product_id)
 );
 
-CREATE TABLE et_pricing(
+CREATE TABLE ek_pricing(
    product_id BIGINT(20),
    merchant_id BIGINT(255),
    merchant_price DOUBLE,
-   et_percentage DOUBLE,
+   ek_percentage DOUBLE,
    sell_price DOUBLE,
    PRIMARY KEY(product_id,merchant_id),
-  CONSTRAINT  FOREIGN KEY (product_id) REFERENCES et_product (product_id),
-  CONSTRAINT  FOREIGN KEY (merchant_id) REFERENCES et_user_account (id)
+  CONSTRAINT  FOREIGN KEY (product_id) REFERENCES ek_product (product_id),
+  CONSTRAINT  FOREIGN KEY (merchant_id) REFERENCES ek_user_account (id)
 );
 
-CREATE TABLE et_order_item (
+CREATE TABLE ek_order_item (
   order_item_id BIGINT(20) AUTO_INCREMENT,
   product_id BIGINT(20) NOT NULL,
   merchant_id BIGINT(255) NOT NULL,
   order_id  BIGINT(20) NOT NULL,
   vendor_price DOUBLE,
-  et_percentage DOUBLE,
+  ek_percentage DOUBLE,
   sell_price DOUBLE,
   total_price DOUBLE,
   quantity int,
   PRIMARY KEY (order_item_id)
  );
 
-CREATE TABLE et_order (
+CREATE TABLE ek_order (
   order_id BIGINT(11)  AUTO_INCREMENT,
   customer_id BIGINT(11),
   session_id BIGINT(11),
@@ -100,7 +100,7 @@ CREATE TABLE et_order (
 
 );
 
-CREATE TABLE et_order_payment (
+CREATE TABLE ek_order_payment (
   order_payment_id BIGINT(20) AUTO_INCREMENT,
   amount DECIMAL(19,5),
   archived BOOLEAN,
@@ -110,11 +110,11 @@ CREATE TABLE et_order_payment (
   address_id BIGINT(20),
   order_id BIGINT(20),
   PRIMARY KEY (ORDER_PAYMENT_ID)
-  -- CONSTRAINT FK9517A14F89FE8A02 FOREIGN KEY (ORDER_ID) REFERENCES et_ORDER (ORDER_ID),
-  -- CONSTRAINT FK9517A14FC13085DD FOREIGN KEY (ADDRESS_ID) REFERENCES et_ADDRESS (ADDRESS_ID)
+  -- CONSTRAINT FK9517A14F89FE8A02 FOREIGN KEY (ORDER_ID) REFERENCES ek_ORDER (ORDER_ID),
+  -- CONSTRAINT FK9517A14FC13085DD FOREIGN KEY (ADDRESS_ID) REFERENCES ek_ADDRESS (ADDRESS_ID)
 );
 
-CREATE TABLE et_order_payment_transaction (
+CREATE TABLE ek_order_payment_transaction (
   payment_transaction_id BIGINT(20) AUTO_INCREMENT,
   transaction_amount DECIMAL(19,2),
   archived BOOLEAN,
@@ -128,6 +128,6 @@ CREATE TABLE et_order_payment_transaction (
   PRIMARY KEY (payment_transaction_id),
   KEY  (order_payment),
   KEY  (parent_transaction)
-  -- CONSTRAINT  FOREIGN KEY (order_payment) REFERENCES et_order_payment (ORDER_PAYMENT_ID),
-  -- CONSTRAINT  FOREIGN KEY (parent_transaction) REFERENCES et_order_payment_transaction (payment_transaction_id)
+  -- CONSTRAINT  FOREIGN KEY (order_payment) REFERENCES ek_order_payment (ORDER_PAYMENT_ID),
+  -- CONSTRAINT  FOREIGN KEY (parent_transaction) REFERENCES ek_order_payment_transaction (payment_transaction_id)
 );

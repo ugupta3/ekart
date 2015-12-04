@@ -10,7 +10,7 @@ import java.util.List;
  * The persistent class for the et_category database table.
  */
 @Entity
-@Table(name = "et_category")
+@Table(name = "ek_category")
 @NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c")
 public class Category {
 

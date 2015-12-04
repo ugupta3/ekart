@@ -7,14 +7,14 @@ import javax.persistence.*;
  * The persistent class for the et_pricing database table.
  */
 @Entity
-@Table(name = "et_pricing")
+@Table(name = "ek_pricing")
 @NamedQuery(name = "Pricing.findAll", query = "SELECT p FROM Pricing p")
 public class Pricing {
 
     @EmbeddedId
     private PricingPK id;
 
-    @Column(name = "et_percentage")
+    @Column(name = "ek_percentage")
     private double etPercentage;
 
     @Column(name = "sell_price")

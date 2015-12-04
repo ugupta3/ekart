@@ -10,7 +10,7 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="et_user_account")
+@Table(name="ek_user_account")
 public class UserAccount  {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

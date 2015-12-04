@@ -9,7 +9,7 @@ import java.util.List;
  * The persistent class for the et_address database table.
  */
 @Entity
-@Table(name = "et_address")
+@Table(name = "ek_address")
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

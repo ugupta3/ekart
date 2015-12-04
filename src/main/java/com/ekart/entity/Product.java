@@ -9,7 +9,7 @@ import javax.persistence.*;
  * The persistent class for the et_product database table.
  */
 @Entity
-@Table(name = "et_product")
+@Table(name = "ek_product")
 @NamedQueries(
         {@NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
                 @NamedQuery(name = "Product.getProductsByCategory", query = "SELECT p FROM Product p" +

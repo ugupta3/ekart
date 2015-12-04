@@ -8,7 +8,7 @@ import java.math.BigInteger;
  * The persistent class for the et_inventory database table.
  */
 @Entity
-@Table(name = "et_inventory")
+@Table(name = "ek_inventory")
 @NamedQuery(name = "Inventory.findAll", query = "SELECT i FROM Inventory i")
 public class Inventory {
 

@@ -10,7 +10,7 @@ import java.math.BigInteger;
  * The persistent class for the et_order database table.
  */
 @Entity
-@Table(name = "et_order")
+@Table(name = "ek_order")
 @NamedQuery(name = "Order.findAll", query = "SELECT o FROM Order o")
 public class Order {
 

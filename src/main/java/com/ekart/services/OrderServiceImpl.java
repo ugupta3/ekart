@@ -5,12 +5,13 @@ import com.ekart.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Named;
 import java.math.BigInteger;
 
 /**
  * Created by umam on 11/26/15.
  */
-@Service
+@Named
 public class OrderServiceImpl implements OrderService {
 
     private OrderRepository orderRepository;
