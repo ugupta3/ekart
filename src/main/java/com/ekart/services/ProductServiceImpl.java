@@ -39,8 +39,9 @@ public class ProductServiceImpl implements ProductService {
         productRepository.getProductsByCategory(category).forEach(
                 product -> {
 
-                   Stream<Pricing> pricingStream = product.getPricing().stream().filter(pricing -> pricing.getInventory().getQuantityInHand().intValue() > 0);
-                    List<ProductResponse> responses =     pricingStream.map(pricingFiltered ->
+                    List<ProductResponse> responses  = product.getPricing().stream()
+                                                        .filter(pricing ->  pricing.getInventory() != null && pricing.getInventory().getQuantityInHand().intValue() > 0)
+                                                        .map(pricingFiltered ->
                                     new ProductResponse(product.getProductId(), product.getImageUrl(), product.getProductName(),
                                             pricingFiltered .getUserAccount().getAddress().getAddressLine1(), pricingFiltered.getSellPrice(), pricingFiltered.getUserAccount().getId())).collect(Collectors.toList());
 
