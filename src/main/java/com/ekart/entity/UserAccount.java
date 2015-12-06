@@ -1,6 +1,7 @@
 package com.ekart.entity;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class UserAccount  {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(unique=true, nullable=false)
-	private String id;
+	private BigInteger id;
 
 	@Column(length=1)
 	private String algorithm;
@@ -56,11 +57,11 @@ public class UserAccount  {
 	public UserAccount() {
 	}
 
-	public String getId() {
+	public BigInteger getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(BigInteger id) {
 		this.id = id;
 	}
 

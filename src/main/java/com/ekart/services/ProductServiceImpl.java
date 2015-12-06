@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -38,10 +39,10 @@ public class ProductServiceImpl implements ProductService {
         productRepository.getProductsByCategory(category).forEach(
                 product -> {
 
-                    List<ProductResponse> responses = product.getPricing().stream().map(
-                            pricing ->
+                   Stream<Pricing> pricingStream = product.getPricing().stream().filter(pricing -> pricing.getInventory().getQuantityInHand().intValue() > 0);
+                    List<ProductResponse> responses =     pricingStream.map(pricingFiltered ->
                                     new ProductResponse(product.getProductId(), product.getImageUrl(), product.getProductName(),
-                                            pricing.getUserAccount().getAddress().getAddressLine1(), pricing.getSellPrice())).collect(Collectors.toList());
+                                            pricingFiltered .getUserAccount().getAddress().getAddressLine1(), pricingFiltered.getSellPrice(), pricingFiltered.getUserAccount().getId())).collect(Collectors.toList());
 
                     productResponses.addAll(responses);
                 }

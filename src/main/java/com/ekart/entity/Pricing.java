@@ -30,6 +30,13 @@ public class Pricing {
     @JoinColumn(name="merchant_id", insertable = false, updatable = false)
     private UserAccount userAccount;
 
+    @OneToOne
+    @JoinColumns({
+            @JoinColumn(name = "merchant_id", referencedColumnName= "merchant_id"),
+            @JoinColumn(name = "product_id", referencedColumnName= "product_id")
+    })
+    private Inventory inventory;
+
 
     public Pricing() {
 
@@ -81,5 +88,13 @@ public class Pricing {
 
     public void setUserAccount(UserAccount userAccount) {
         this.userAccount = userAccount;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 }

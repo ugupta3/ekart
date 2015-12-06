@@ -12,19 +12,17 @@ import java.math.BigInteger;
 @NamedQuery(name = "Inventory.findAll", query = "SELECT i FROM Inventory i")
 public class Inventory {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "inventory_id", unique = true, nullable = false)
+    @EmbeddedId
+    private PricingPK id;
+
+    @Column(name = "inventory_id")
     private BigInteger inventoryId;
-
-    @Column(name = "merchant_id")
-    private BigInteger merchantId;
-
-    @Column(name = "product_id")
-    private BigInteger productId;
 
     @Column(name = "quantity_in_hand", nullable = false)
     private BigInteger quantityInHand;
+
+    @OneToOne(mappedBy="inventory")
+    private Pricing pricing;
 
     public Inventory() {
     }
@@ -37,22 +35,6 @@ public class Inventory {
         this.inventoryId = inventoryId;
     }
 
-    public BigInteger getMerchantId() {
-        return this.merchantId;
-    }
-
-    public void setMerchantId(BigInteger merchantId) {
-        this.merchantId = merchantId;
-    }
-
-    public BigInteger getProductId() {
-        return this.productId;
-    }
-
-    public void setProductId(BigInteger productId) {
-        this.productId = productId;
-    }
-
     public BigInteger getQuantityInHand() {
         return this.quantityInHand;
     }
@@ -61,4 +43,19 @@ public class Inventory {
         this.quantityInHand = quantityInHand;
     }
 
+    public Pricing getPricing() {
+        return pricing;
+    }
+
+    public void setPricing(Pricing pricing) {
+        this.pricing = pricing;
+    }
+
+    public PricingPK getId() {
+        return id;
+    }
+
+    public void setId(PricingPK id) {
+        this.id = id;
+    }
 }

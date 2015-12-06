@@ -16,14 +16,17 @@ public class ProductResponse {
     private String itemLocation;
     @JsonProperty
     private double price;
+    @JsonProperty
+    private BigInteger merchantId;
 
 
-    public ProductResponse(BigInteger productId, String imageUrl, String productName, String itemLocation,double price) {
+    public ProductResponse(BigInteger productId, String imageUrl, String productName, String itemLocation,double price, BigInteger merchantId) {
         this.productId = productId;
         this.imageUrl = imageUrl;
         this.productName = productName;
         this.itemLocation = itemLocation;
         this.price=price;
+        this.merchantId = merchantId;
     }
 
     public BigInteger getProductId() {
@@ -44,5 +47,13 @@ public class ProductResponse {
 
     public double getPrice() {
         return price;
+    }
+
+    public BigInteger getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(BigInteger merchantId) {
+        this.merchantId = merchantId;
     }
 }
