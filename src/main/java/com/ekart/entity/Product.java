@@ -11,7 +11,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "ek_product")
 @NamedQueries(
-        {@NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
+        {
+                @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
                 @NamedQuery(name = "Product.getProductsByCategory", query = "SELECT p FROM Product p" +
                         " JOIN FETCH p.category  c " +
                         " JOIN FETCH p.pricing  prc " +

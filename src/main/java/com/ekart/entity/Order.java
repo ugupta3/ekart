@@ -11,7 +11,16 @@ import java.math.BigInteger;
  */
 @Entity
 @Table(name = "ek_order")
-@NamedQuery(name = "Order.findAll", query = "SELECT o FROM Order o")
+
+@NamedQueries(
+        {       @NamedQuery(name =  "Order.findAll", query = "SELECT o FROM Order o"),
+                @NamedQuery(name =  "Order.getOpenOrderByCustomerId" , query = " SELECT o FROM Order o" +
+                                    " where o.orderStatus='1'"+
+                                    " AND"+
+                                    " o.customerId = ?1"
+                            )
+        }
+)
 public class Order {
 
     @Id

@@ -8,7 +8,7 @@ import javax.persistence.*;
  * The primary key class for the et_pricing database table.
  */
 @Embeddable
-public class PricingPK implements Serializable {
+public class MerchantProductKey implements Serializable {
     //default serial version id, required for serializable classes.
     private static final long serialVersionUID = 1L;
 
@@ -18,7 +18,11 @@ public class PricingPK implements Serializable {
     @Column(name = "merchant_id", unique = true, nullable = false)
     private BigInteger merchantId;
 
-    public PricingPK() {
+    public MerchantProductKey() {
+    }
+    public MerchantProductKey(BigInteger productId, BigInteger merchantId) {
+        this.productId = productId;
+        this.merchantId = merchantId;
     }
 
     public BigInteger getProductId() {
@@ -41,10 +45,10 @@ public class PricingPK implements Serializable {
         if (this == other) {
             return true;
         }
-        if (!(other instanceof PricingPK)) {
+        if (!(other instanceof MerchantProductKey)) {
             return false;
         }
-        PricingPK castOther = (PricingPK) other;
+        MerchantProductKey castOther = (MerchantProductKey) other;
         return
                 this.productId.equals(castOther.productId)
                         && this.merchantId.equals(castOther.merchantId);

@@ -9,7 +9,7 @@ import java.math.BigInteger;
  * 
  */
 @Entity
-@Table(name="et_order_item")
+@Table(name="ek_order_item")
 @NamedQuery(name="OrderItem.findAll", query="SELECT o FROM OrderItem o")
 public class OrderItem  {
 
@@ -18,8 +18,8 @@ public class OrderItem  {
 	@Column(name="order_item_id", unique=true, nullable=false)
 	private BigInteger orderItemId;
 
-	@Column(name="et_percentage")
-	private double etPercentage;
+	@Column(name="ek_percentage")
+	private double ekPercentage;
 
 	@Column(name="merchant_id", nullable=false)
 	private BigInteger merchantId;
@@ -60,12 +60,12 @@ public class OrderItem  {
 		this.merchantPrice = merchantPrice;
 	}
 
-	public double getEtPercentage() {
-		return this.etPercentage;
+	public double getEkPercentage() {
+		return this.ekPercentage;
 	}
 
-	public void setEtPercentage(double etPercentage) {
-		this.etPercentage = etPercentage;
+	public void setEkPercentage(double ekPercentage) {
+		this.ekPercentage = ekPercentage;
 	}
 
 	public BigInteger getMerchantId() {

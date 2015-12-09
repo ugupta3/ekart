@@ -13,7 +13,7 @@ import java.math.BigInteger;
 public class Inventory {
 
     @EmbeddedId
-    private PricingPK id;
+    private MerchantProductKey id;
 
     @Column(name = "inventory_id")
     private BigInteger inventoryId;
@@ -51,11 +51,11 @@ public class Inventory {
         this.pricing = pricing;
     }
 
-    public PricingPK getId() {
+    public MerchantProductKey getId() {
         return id;
     }
 
-    public void setId(PricingPK id) {
+    public void setId(MerchantProductKey id) {
         this.id = id;
     }
 }
