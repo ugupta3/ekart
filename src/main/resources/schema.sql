@@ -1,8 +1,8 @@
-DROP SCHEMA IF EXISTS etanker;
-create SCHEMA etanker;
-USE etanker;
+DROP SCHEMA IF EXISTS ekart;
+create SCHEMA ekart;
+USE ekart;
 CREATE TABLE ek_address (
-  address_id bigint(20)  AUTO_INCREMENT,
+  id bigint(20)  AUTO_INCREMENT,
   address_line1 varchar(255) NOT NULL,
   address_line2 varchar(255),
   city varchar(255) NOT NULL,
@@ -15,22 +15,58 @@ CREATE TABLE ek_address (
   phone VARCHAR(12),
   country varchar(255) DEFAULT 'INDIA',
   state varchar(25),
-  PRIMARY KEY (address_id)
+  PRIMARY KEY (id)
   );
-CREATE TABLE ek_user_account(
-    id bigint(12) AUTO_INCREMENT,
-    address_id bigint(20),
-    phone VARCHAR(12) NOT NULL,
-    email varchar(100) NOT NULL,
-    password_encrypted_value varchar(40) DEFAULT NULL,
-    password_salt varchar(100) DEFAULT NULL,
-    algorithm varchar(10) DEFAULT 'SHA-1',
-    password_updated_at datetime DEFAULT NULL,
-    created_at datetime DEFAULT NULL,
-    updated_at datetime DEFAULT NULL,
-    PRIMARY KEY (id),
-    CONSTRAINT FOREIGN KEY (address_id) REFERENCES ek_address(address_id)
+
+  CREATE TABLE `ek_privilege` (
+     `id` bigint(20) NOT NULL AUTO_INCREMENT,
+     `name` varchar(255) DEFAULT NULL,
+     PRIMARY KEY (`id`)
+   );
+
+  CREATE TABLE `ek_user_role` (
+     `id` bigint(20) NOT NULL AUTO_INCREMENT,
+     `name` varchar(255) DEFAULT NULL,
+     `privilege_id` bigint(20),
+     PRIMARY KEY (`id`),
+     CONSTRAINT  FOREIGN KEY (`privilege_id`) REFERENCES `ek_privilege` (`id`)
+   );
+
+ CREATE TABLE `ek_user` (
+   `id` bigint(20) AUTO_INCREMENT,
+   `email` varchar(100) NOT NULL,
+   `enabled` bit(1) NOT NULL,
+   `first_name` varchar(255) DEFAULT NULL,
+   `last_name` varchar(255) DEFAULT NULL,
+   `password` varchar(60) DEFAULT NULL,
+   `phone` varchar(255) DEFAULT NULL,
+   `token_expired` bit(1) NOT NULL,
+   `created_at` datetime DEFAULT NULL,
+   `updated_at` datetime DEFAULT NULL,
+   `address_id`bigint(20) NOT NULL,
+    role_id bigint(20) NOT NULL,
+   CONSTRAINT  FOREIGN KEY (`role_id`) REFERENCES `ek_user_role` (`id`),
+   CONSTRAINT  FOREIGN KEY (`address_id`) REFERENCES `ek_address` (`id`),
+   PRIMARY KEY (`id`)
  );
+ CREATE TABLE `ek_verification_token` (
+      `id` bigint(20) NOT NULL AUTO_INCREMENT,
+      `expiry_date` datetime DEFAULT NULL,
+      `token` varchar(255) DEFAULT NULL,
+      `user_id` bigint(20) NOT NULL,
+      PRIMARY KEY (`id`),
+      KEY  (`user_id`),
+      CONSTRAINT  FOREIGN KEY (`user_id`) REFERENCES `ek_user` (`id`)
+    );
+CREATE TABLE `ek_password_rest_token` (
+  `id` bigint(20) AUTO_INCREMENT,
+  `expiry_date` datetime DEFAULT NULL,
+  `token` varchar(255) DEFAULT NULL,
+  `user_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY  (user_id),
+  CONSTRAINT FOREIGN KEY (`user_id`) REFERENCES `ek_user` (`id`)
+);
 CREATE TABLE ek_category (
   category_id BIGINT(20) AUTO_INCREMENT,
   category_name VARCHAR(255) NOT NULL,
@@ -55,7 +91,7 @@ CREATE TABLE ek_inventory (
   product_id BIGINT(20),
   quantity_in_hand BIGINT(20) NOT NULL,
   PRIMARY KEY (inventory_id),
-  CONSTRAINT  FOREIGN KEY (merchant_id) REFERENCES ek_user_account (id),
+  CONSTRAINT  FOREIGN KEY (merchant_id) REFERENCES ek_user (id),
   CONSTRAINT  FOREIGN KEY (product_id) REFERENCES ek_product (product_id)
 );
 
@@ -67,7 +103,7 @@ CREATE TABLE ek_pricing(
    sell_price DOUBLE,
    PRIMARY KEY(product_id,merchant_id),
   CONSTRAINT  FOREIGN KEY (product_id) REFERENCES ek_product (product_id),
-  CONSTRAINT  FOREIGN KEY (merchant_id) REFERENCES ek_user_account (id)
+  CONSTRAINT  FOREIGN KEY (merchant_id) REFERENCES ek_user (id)
 );
 
 CREATE TABLE ek_order_item (

@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
                     List<ProductResponse> responses = product.getPricing().stream().map(
                             pricing ->
                                     new ProductResponse(product.getProductId(), product.getImageUrl(), product.getProductName(),
-                                            pricing.getUserAccount().getAddress().getAddressLine1(), pricing.getSellPrice())).collect(Collectors.toList());
+                                            pricing.getUser().getAddress().get(0).getAddressLine1(), pricing.getSellPrice())).collect(Collectors.toList());
 
                     productResponses.addAll(responses);
                 }

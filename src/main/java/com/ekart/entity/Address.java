@@ -1,5 +1,7 @@
 package com.ekart.entity;
 
+import com.ekart.account.entity.User;
+
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.List;
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "address_id", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false)
     private BigInteger addressId;
 
     @Column(name = "address_line1", nullable = false, length = 255)
@@ -51,9 +53,6 @@ public class Address {
     @Column
     private String state;
 
-    //bi-directional many-to-one association to UserAccount
-    @OneToMany(mappedBy = "address")
-    private List<UserAccount> userAccounts;
 
 
     public Address() {
@@ -153,14 +152,6 @@ public class Address {
 
     public void setState(String state) {
         this.state = state;
-    }
-
-    public List<UserAccount> getUserAccounts() {
-        return userAccounts;
-    }
-
-    public void setUserAccounts(List<UserAccount> userAccounts) {
-        this.userAccounts = userAccounts;
     }
 
     public String getPhone() {

@@ -1,5 +1,7 @@
 package com.ekart.entity;
 
+import com.ekart.account.entity.User;
+
 import javax.persistence.*;
 
 
@@ -28,7 +30,9 @@ public class Pricing {
 
     @ManyToOne
     @JoinColumn(name="merchant_id", insertable = false, updatable = false)
-    private UserAccount userAccount;
+    private User user;
+
+
 
 
     public Pricing() {
@@ -75,11 +79,11 @@ public class Pricing {
         this.product = product;
     }
 
-    public UserAccount getUserAccount() {
-        return userAccount;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserAccount(UserAccount userAccount) {
-        this.userAccount = userAccount;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
