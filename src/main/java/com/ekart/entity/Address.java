@@ -53,9 +53,19 @@ public class Address {
     @Column
     private String state;
 
+    @Column(name = "customer_id")
+    private BigInteger customerId;
 
 
     public Address() {
+    }
+
+    public BigInteger getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(BigInteger customerId) {
+        this.customerId = customerId;
     }
 
     public BigInteger getAddressId() {

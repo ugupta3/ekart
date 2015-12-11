@@ -1,15 +1,13 @@
+/*
 package com.ekart.account.resource;
 
-import com.ekart.account.entity.PasswordResetToken;
 import com.ekart.account.entity.User;
 import com.ekart.account.entity.VerificationToken;
 import com.ekart.account.error.InvalidOldPasswordException;
-import com.ekart.account.error.UserAlreadyExistException;
 import com.ekart.account.error.UserNotFoundException;
-import com.ekart.account.request.UserRequest;
+import com.ekart.account.request.UserRegistrationRequest;
 import com.ekart.account.service.UserService;
 import com.ekart.account.response.GenericResponse;
-import com.ekart.account.validation.EmailExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,29 +15,23 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import java.util.Calendar;
 import java.util.Locale;
 import java.util.UUID;
 
+*/
 /**
  * Created by umam on 12/6/15.
- */
+ *//*
+
 @Path("/user")
-public class UserRegistrationResource {
+public class UserRegistrationResourceLegacy {
 
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
@@ -48,41 +40,30 @@ public class UserRegistrationResource {
     private UserService userService;
 
     @Autowired
-    private MessageSource messages;
-
-    //@Autowired
-    //private JavaMailSender mailSender;
-
-    //@Autowired
-    //private ApplicationEventPublisher eventPublisher;
-
-    @Autowired
     private UserDetailsService userDetailsService;
 
-   // @Autowired
-    //private Environment env;
+    @Autowired
+    private MessageSource messages;
 
     @POST
-    @Path(value = "/registration")
+    @Path(value = "/register")
     @Produces(MediaType.APPLICATION_JSON)
-    public GenericResponse registerUserAccount(@BeanParam final UserRequest accountDto,
+    public GenericResponse registerUserAccount(@BeanParam final UserRegistrationRequest accountDto,
                                                @Context HttpServletRequest request) {
 
         LOGGER.debug("Registering user account with information: {}", accountDto);
+        return userService.registerNewUserAccount(accountDto);
 
-        final User registered = createUserAccount(accountDto);
-        if (registered == null) {
-            throw new UserAlreadyExistException();
-        }
-        final String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-        //  eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), appUrl));
-
-        return new GenericResponse("success");
     }
 
     @GET
     @Path(value = "/regitrationConfirm")
     @Consumes(MediaType.APPLICATION_JSON)
+    */
+/*url with token appended with  token
+    * if succes go to home page
+    *  else got to login page or else we can implement using OTO later*//*
+
     public GenericResponse confirmRegistration(@Qualifier("token") final String token) {
 
         final VerificationToken verificationToken = userService.getVerificationToken(token);
@@ -90,16 +71,17 @@ public class UserRegistrationResource {
         if (verificationToken == null) {
 
         }
-
         final User user = verificationToken.getUser();
         //final Calendar cal = Calendar.getInstance();
-       /* if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
+       */
+/* if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
             model.addAttribute("message", messages.getMessage("auth.message.expired", null, locale));
             model.addAttribute("expired", true);
             model.addAttribute("token", token);
             return "redirect:/badUser.html?lang=" + locale.getLanguage();
         }
-        */
+        *//*
+
         user.setEnabled(true);
         userService.saveRegisteredUser(user);
         // model.addAttribute("message", messages.getMessage("message.accountVerified", null, locale));
@@ -140,6 +122,7 @@ public class UserRegistrationResource {
         //mailSender.send(email);
         return new GenericResponse(messages.getMessage("message.resetPasswordEmail", null, request.getLocale()));
     }
+*/
 /*
     @RequestMapping(value = "/user/changePassword", method = RequestMethod.GET)
     public String showChangePasswordPage(@RequestParam("id") final long id,
@@ -163,7 +146,8 @@ public class UserRegistrationResource {
 
         return "redirect:/updatePassword.html?lang=" + locale.getLanguage();
     }
-*/
+*//*
+
 
     @POST
     @Path(value = "savePassword")
@@ -199,7 +183,7 @@ public class UserRegistrationResource {
         email.setSubject("Resend Registration Token");
         email.setText(message + " \r\n" + confirmationUrl);
         email.setTo(user.getEmail());
-      //  email.setFrom(env.getProperty("support.email"));
+        //  email.setFrom(env.getProperty("support.email"));
         return email;
     }
 
@@ -214,15 +198,6 @@ public class UserRegistrationResource {
         return email;
     }
 
-    private User createUserAccount(final UserRequest accountDto) {
-        User registered = null;
-        try {
-            registered = userService.registerNewUserAccount(accountDto);
-        } catch (final EmailExistsException e) {
-            return null;
-        }
-        return registered;
-    }
-
 
 }
+*/

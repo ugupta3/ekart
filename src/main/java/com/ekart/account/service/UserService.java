@@ -4,12 +4,13 @@ package com.ekart.account.service;
 import com.ekart.account.entity.PasswordResetToken;
 import com.ekart.account.entity.User;
 import com.ekart.account.entity.VerificationToken;
-import com.ekart.account.request.UserRequest;
-import com.ekart.account.validation.EmailExistsException;
+import com.ekart.account.request.UserRegistrationRequest;
+import com.ekart.account.response.GenericResponse;
+
 
 public interface UserService {
 
-    User registerNewUserAccount(UserRequest accountDto) throws EmailExistsException;
+    GenericResponse registerNewUserAccount(UserRegistrationRequest accountDto);
 
     User getUser(String verificationToken);
 
@@ -36,5 +37,6 @@ public interface UserService {
     void changeUserPassword(User user, String password);
 
     boolean checkIfValidOldPassword(User user, String password);
+    User findUserByPhone(long phone);
 
 }

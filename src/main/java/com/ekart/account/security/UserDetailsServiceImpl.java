@@ -53,7 +53,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             final User user = userRepository.findByEmail(email);
             if (user == null) {
                 return new org.springframework.security.core.userdetails.User(" ", " ", true, true, true, true,
-                        getAuthorities(Arrays.asList(roleRepository.findByName("ROLE_USER"))));
+                        getAuthorities(roleRepository.findByName("ROLE_USER")));
             }
 
             return new org.springframework.security.core.userdetails.User(
@@ -67,16 +67,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     // UTIL
 
-    public final Collection<? extends GrantedAuthority> getAuthorities(final Collection<Role> roles) {
-        return getGrantedAuthorities(getPrivileges(roles));
+    public final Collection<? extends GrantedAuthority> getAuthorities(Role role) {
+        return getGrantedAuthorities(getPrivileges(role));
     }
 
-    private final List<String> getPrivileges(final Collection<Role> roles) {
+    private final List<String> getPrivileges(Role role) {
         final List<String> privileges = new ArrayList<String>();
         final List<Privilege> collection = new ArrayList<Privilege>();
-        for (final Role role : roles) {
-            collection.addAll(role.getPrivileges());
-        }
+
+        collection.addAll(role.getPrivileges());
         for (final Privilege item : collection) {
             privileges.add(item.getName());
         }

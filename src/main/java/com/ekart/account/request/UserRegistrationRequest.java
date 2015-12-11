@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 import javax.ws.rs.FormParam;
 
 @PasswordMatches
-public class UserRequest {
+public class UserRegistrationRequest {
     @NotNull
     @Size(min = 1)
     @FormParam("firstName")

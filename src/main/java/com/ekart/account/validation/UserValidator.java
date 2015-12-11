@@ -1,6 +1,6 @@
 package com.ekart.account.validation;
 
-import com.ekart.account.request.UserRequest;
+import com.ekart.account.request.UserRegistrationRequest;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -9,7 +9,7 @@ public class UserValidator implements Validator {
 
     @Override
     public boolean supports(final Class<?> clazz) {
-        return UserRequest.class.isAssignableFrom(clazz);
+        return UserRegistrationRequest.class.isAssignableFrom(clazz);
     }
 
     @Override

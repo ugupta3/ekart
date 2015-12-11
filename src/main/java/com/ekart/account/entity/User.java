@@ -33,9 +33,6 @@ public class User {
     private String phone;
 
     @Column(nullable = false)
-    private long address_id;
-
-    @Column(nullable = false)
     private long role_id;
 
     private boolean enabled;
@@ -51,17 +48,13 @@ public class User {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @OneToMany(orphanRemoval = true)
-    @JoinColumn(name="id",referencedColumnName ="role_id")
-    private List<Role> roles;
+    @OneToOne(orphanRemoval = true,fetch = FetchType.LAZY)
+    @JoinColumn(name = "id", referencedColumnName = "role_id", insertable = false, updatable = false)
+    private Role roles;
 
-    @OneToMany(orphanRemoval = true)
-    @JoinColumn(name = "id",referencedColumnName = "address_id")
+    @OneToMany(orphanRemoval = true,fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id",insertable = false, updatable = false)
     private List<Address> address;
-
-
-    @OneToMany(mappedBy = "user")
-    private List<Pricing> pricing;//TODO check if we can remove this
 
 
     public User() {
@@ -86,14 +79,6 @@ public class User {
         this.role_id = role_id;
     }
 
-    public long getAddress_id() {
-        return address_id;
-    }
-
-    public void setAddress_id(long address_id) {
-        this.address_id = address_id;
-    }
-
     public List<Address> getAddress() {
         return address;
     }
@@ -102,13 +87,6 @@ public class User {
         this.address = address;
     }
 
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
 
     public Long getId() {
         return id;
@@ -174,10 +152,6 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-    public List<Pricing> getPricing() {
-        return pricing;
-    }
-
 
     public boolean isEnabled() {
         return enabled;
@@ -195,7 +169,11 @@ public class User {
         this.tokenExpired = tokenExpired;
     }
 
-    public void setPricing(List<Pricing> pricing) {
-        this.pricing = pricing;
+    public Role getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Role roles) {
+        this.roles = roles;
     }
 }

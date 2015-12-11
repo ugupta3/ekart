@@ -18,11 +18,9 @@ public class Role implements Serializable{
 
     private Long privilege_id;
 
-    @ManyToMany
-    @JoinTable(
-            name="ROLE_PRIVELGES",
-            joinColumns={@JoinColumn(name="id", referencedColumnName="privilege_id")},
-            inverseJoinColumns={@JoinColumn(name="privilege_id", referencedColumnName="id")})
+
+    @OneToMany(orphanRemoval = true,fetch = FetchType.LAZY)
+    @JoinColumn(name = "id", referencedColumnName = "privilege_id",insertable = false, updatable = false)
     private List<Privilege> privileges;
 
 

@@ -1,6 +1,6 @@
 package com.ekart.account.validation;
 
-import com.ekart.account.request.UserRequest;
+import com.ekart.account.request.UserRegistrationRequest;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -14,7 +14,7 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
 
     @Override
     public boolean isValid(final Object obj, final ConstraintValidatorContext context) {
-        final UserRequest user = (UserRequest) obj;
+        final UserRegistrationRequest user = (UserRegistrationRequest) obj;
         return user.getPassword().equals(user.getMatchingPassword());
     }
 

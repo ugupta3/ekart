@@ -7,7 +7,8 @@ import com.ekart.account.repositories.PasswordResetTokenRepository;
 import com.ekart.account.repositories.RoleRepository;
 import com.ekart.account.repositories.UserRepository;
 import com.ekart.account.repositories.VerificationTokenRepository;
-import com.ekart.account.request.UserRequest;
+import com.ekart.account.request.UserRegistrationRequest;
+import com.ekart.account.response.GenericResponse;
 import com.ekart.account.validation.EmailExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,28 +36,36 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepository roleRepository;
 
-
-
     @Override
-    public User registerNewUserAccount(final UserRequest userRequest) throws EmailExistsException {
-        if (emailExist(userRequest.getEmail())) {
-            throw new EmailExistsException("There is an account with that email adress: " + userRequest.getEmail());
+    public GenericResponse registerNewUserAccount(final UserRegistrationRequest userRegistrationRequest) {
+
+        if (emailExist(userRegistrationRequest.getEmail())) {
+
+            return new GenericResponse(new EmailExistsException("There is an account with that email adress: " +
+                    userRegistrationRequest.getEmail())
+                    .getMessage());
+        } else {
+            final User user = new User();
+            user.setFirstName(userRegistrationRequest.getFirstName());
+            user.setLastName(userRegistrationRequest.getLastName());
+            user.setPassword(passwordEncoder.encode(userRegistrationRequest.getPassword()));
+            user.setEmail(userRegistrationRequest.getEmail());
+            user.setRole_id(roleRepository.findByName("ROLE_USER").getId());
+            userRepository.save(user);
+            return new GenericResponse("Confirmation Email has sent please check your mail Inbox and confirm");
         }
-        final User user = new User();
-
-        user.setFirstName(userRequest.getFirstName());
-        user.setLastName(userRequest.getLastName());
-        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        user.setEmail(userRequest.getEmail());
-
-        user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
-        return userRepository.save(user);
     }
+
 
     @Override
     public User getUser(final String verificationToken) {
         final User user = tokenRepository.findByToken(verificationToken).getUser();
         return user;
+    }
+
+    @Override
+    public User findUserByPhone(long phone) {
+        return userRepository.findByPhone(phone);
     }
 
     @Override

@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableAutoConfiguration
-@EntityScan(basePackages = {"com.ekart.entity"})
-@EnableJpaRepositories(basePackages = {"com.ekart.repositories"})
+@EntityScan(basePackages = {"com.ekart"})
+@EnableJpaRepositories(basePackages = {"com.ekart"})
 @EnableTransactionManagement
 public class RepositoryConfiguration {
 }
