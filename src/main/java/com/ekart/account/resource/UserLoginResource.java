@@ -3,6 +3,12 @@ package com.ekart.account.resource;
 import com.ekart.account.handler.UserLoginHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.inject.Inject;
@@ -19,6 +25,11 @@ import javax.ws.rs.core.Response;
 @Path("/user")
 public class UserLoginResource {
 
+    @Inject
+    private UserDetailsService userDetailsService;
+
+    @Inject
+    private AuthenticationManager authenticationManager;
 
     private UserLoginHandler loginHandler;
     private PasswordEncoder passwordEncoder;
@@ -30,20 +41,35 @@ public class UserLoginResource {
     }
 
     @POST
-    @Path(value = "/login")
-    public Response login(@FormParam("email") String email,
-                          @FormParam("phone") long phone,
-                          @FormParam("password") String password) {
+    @Path(value = "/loginWithEmail")
+    public Response loginUsingEmail(@FormParam("email") String email,
+                                    @FormParam("password") String password) {
 
-        if (StringUtils.isNotEmpty(email)) {
-            return loginHandler.checkUserCredentialByEmail(email, password) ?
-                    Response.ok("logged In ").build() :
-                    Response.serverError().type("Invalid login details").build();
-        } else {
-            return loginHandler.checkUserCredentialByPhone(phone, password) ?
-                    Response.ok("logged In ").build() :
-                    Response.serverError().type("Invalid login details").build();
-        }
+
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(email, password);
+        Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        UserDetails userDetails = this.userDetailsService.loadUserByUsername(email);
+
+        return loginHandler.checkUserCredentialByEmail(email, password) ?
+                Response.ok("logged In ").build() :
+                Response.serverError().type("Invalid login details").build();
+
+    }
+
+    @POST
+    @Path(value = "/loginWithPhone")
+    public Response loginUsingPhone(@FormParam("email") String email,
+                                    @FormParam("phone") long phone,
+                                    @FormParam("password") String password) {
+
+
+        return loginHandler.checkUserCredentialByPhone(phone, password) ?
+                Response.ok("logged In ").build() :
+                Response.serverError().type("Invalid login details").build();
+
 
     }
 }

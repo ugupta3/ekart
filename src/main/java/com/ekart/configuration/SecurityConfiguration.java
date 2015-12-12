@@ -1,6 +1,5 @@
 package com.ekart.configuration;
 
-import com.ekart.account.security.EkartUrlAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -19,14 +18,6 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
-
-    @Autowired
-    private EkartUrlAuthenticationSuccessHandler authenticationSuccessHandler;
-
-
-
 
     @Autowired
     @Qualifier("userDetailsService")
@@ -36,9 +27,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.authorizeRequests()
-                .antMatchers("/api/**").access("hasRole('ROLE_USER')");
+                .antMatchers("/api/**").fullyAuthenticated();
     }
-
 
 
     @Autowired
@@ -61,12 +51,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder(11);
     }
 
+
     @Bean
-    public EkartUrlAuthenticationSuccessHandler mySuccessHandler(){
-        return new EkartUrlAuthenticationSuccessHandler();
-    }
-    @Bean
-    public SimpleUrlAuthenticationFailureHandler myFailureHandler(){
+    public SimpleUrlAuthenticationFailureHandler myFailureHandler() {
         return new SimpleUrlAuthenticationFailureHandler();
     }
 

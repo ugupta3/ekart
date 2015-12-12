@@ -40,7 +40,6 @@ public class EkartUserDetailsServiceImpl implements UserDetailsService {
         super();
     }
 
-    // API
 
     @Override
     public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
@@ -67,6 +66,14 @@ public class EkartUserDetailsServiceImpl implements UserDetailsService {
         return getGrantedAuthorities(getPrivileges(role));
     }
 
+    private final List<GrantedAuthority> getGrantedAuthorities(final List<String> privileges) {
+        final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        for (final String privilege : privileges) {
+            authorities.add(new SimpleGrantedAuthority(privilege));
+        }
+        return authorities;
+    }
+
     private final List<String> getPrivileges(Role role) {
         final List<String> privileges = new ArrayList<String>();
         final List<Privilege> collection = new ArrayList<Privilege>();
@@ -77,13 +84,4 @@ public class EkartUserDetailsServiceImpl implements UserDetailsService {
         }
         return privileges;
     }
-
-    private final List<GrantedAuthority> getGrantedAuthorities(final List<String> privileges) {
-        final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        for (final String privilege : privileges) {
-            authorities.add(new SimpleGrantedAuthority(privilege));
-        }
-        return authorities;
-    }
-
 }

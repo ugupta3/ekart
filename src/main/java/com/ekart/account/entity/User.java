@@ -34,9 +34,9 @@ public class User {
 
     @Column(nullable = false)
     private long role_id;
-
+    @Column
     private boolean enabled;
-
+    @Column
     private boolean tokenExpired;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -48,12 +48,12 @@ public class User {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @OneToOne(orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToOne(orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "id", referencedColumnName = "role_id", insertable = false, updatable = false)
     private Role roles;
 
-    @OneToMany(orphanRemoval = true,fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", referencedColumnName = "id",insertable = false, updatable = false)
+    @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id", insertable = false, updatable = false)
     private List<Address> address;
 
 
