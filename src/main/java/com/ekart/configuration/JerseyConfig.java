@@ -1,7 +1,7 @@
 package com.ekart.configuration;
 
 import com.ekart.account.resource.UserLoginResource;
-import com.ekart.account.resource.UserRegistartionResource;
+import com.ekart.account.resource.UserRegistrationResource;
 import com.ekart.api.OrderResource;
 import com.ekart.api.ProductResource;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -18,7 +18,7 @@ public class JerseyConfig extends ResourceConfig {
     public JerseyConfig() {
         register(OrderResource.class);
         register(ProductResource.class);
-        register(UserRegistartionResource.class);
+        register(UserRegistrationResource.class);
         register(UserLoginResource.class);
     }
 }

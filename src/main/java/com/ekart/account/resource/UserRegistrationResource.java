@@ -28,7 +28,7 @@ import java.util.UUID;
  * Created by umam on 12/6/15.
  */
 @Path("/user")
-public class UserRegistartionResource {
+public class UserRegistrationResource {
 
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());

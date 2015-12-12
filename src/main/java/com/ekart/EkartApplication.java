@@ -2,8 +2,12 @@ package com.ekart;
 
 import com.ekart.constants.CacheNameSpace;
 
+import org.glassfish.jersey.servlet.ServletContainer;
+import org.glassfish.jersey.servlet.ServletProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,61 +27,23 @@ import org.springframework.security.core.userdetails.cache.EhCacheBasedUserCache
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.sql.DataSource;
 
 
 @SpringBootApplication
-@EnableCaching//This will check ehcache.xml in the class path if it there it creates ehcacheManger
-@EnableWebSecurity
-public class SpringBootWebApplication extends SpringBootServletInitializer {
-
-
-    @Autowired
-    @Qualifier("userDetailsService")
-    UserDetailsService userDetailsService;
+public class EkartApplication extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(SpringBootWebApplication.class);
+        return application.sources(EkartApplication.class);
     }
 
     public static void main(String[] args) {
-        new SpringBootWebApplication()
-                .configure(new SpringApplicationBuilder(SpringBootWebApplication.class))
+        new EkartApplication()
+                .configure(new SpringApplicationBuilder(EkartApplication.class))
                 .run(args);
     }
 
-    @Bean
-    public CacheManager cacheManager() {
-        return new EhCacheCacheManager(ehCacheCacheManager().getObject());
-    }
-
-    @Bean
-    public EhCacheManagerFactoryBean ehCacheCacheManager() {
-        EhCacheManagerFactoryBean ehCacheManagerFactoryBean = new EhCacheManagerFactoryBean();
-        ehCacheManagerFactoryBean.setConfigLocation(new ClassPathResource("ehcache.xml"));
-        ehCacheManagerFactoryBean.setShared(true);
-        return ehCacheManagerFactoryBean;
-    }
-
-    @Autowired
-    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
-        auth.authenticationProvider(authProvider());
-    }
-
-
-    @Bean
-    public DaoAuthenticationProvider authProvider() {
-        final DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(encoder());
-        return authProvider;
-    }
-
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder(11);
-    }
 }

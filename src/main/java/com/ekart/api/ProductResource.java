@@ -3,6 +3,7 @@ package com.ekart.api;
 import com.ekart.response.ProductResponse;
 import com.ekart.services.ProductService;
 import com.ekart.services.ProductServiceImpl;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import javax.inject.Inject;
 import javax.inject.Qualifier;
@@ -22,6 +23,7 @@ public class ProductResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<ProductResponse> listAllProductsByCategory(
             @DefaultValue("water")@QueryParam(value = "category") String categoryName) {
 

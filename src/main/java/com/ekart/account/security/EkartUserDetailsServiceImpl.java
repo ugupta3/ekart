@@ -22,7 +22,7 @@ import java.util.List;
 
 @Service("userDetailsService")
 @Transactional
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class EkartUserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
@@ -36,7 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private HttpServletRequest request;
 
-    public UserDetailsServiceImpl() {
+    public EkartUserDetailsServiceImpl() {
         super();
     }
 
@@ -48,14 +48,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (loginAttemptService.isBlocked(ip)) {
             throw new RuntimeException("blocked");
         }
-
         try {
             final User user = userRepository.findByEmail(email);
             if (user == null) {
-                return new org.springframework.security.core.userdetails.User(" ", " ", true, true, true, true,
-                        getAuthorities(roleRepository.findByName("ROLE_USER")));
+                throw new UsernameNotFoundException("User not Found!");
             }
-
             return new org.springframework.security.core.userdetails.User(
                     user.getEmail(), user.getPassword(), user.isEnabled(),
                     true, true, true,
@@ -65,7 +62,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
     }
 
-    // UTIL
 
     public final Collection<? extends GrantedAuthority> getAuthorities(Role role) {
         return getGrantedAuthorities(getPrivileges(role));

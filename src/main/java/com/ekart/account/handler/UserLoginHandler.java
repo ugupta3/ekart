@@ -24,7 +24,6 @@ public class UserLoginHandler {
         return passwordEncoder.matches(password,user.getPassword());
 
     }
-
     public Boolean checkUserCredentialByPhone(long phone, String password) {
         User user = userService.findUserByPhone(phone);
         return passwordEncoder.matches(password,user.getPassword());

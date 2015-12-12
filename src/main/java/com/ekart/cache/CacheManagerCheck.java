@@ -1,4 +1,4 @@
-package com.ekart.common;
+package com.ekart.cache;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.cache.CacheManager;

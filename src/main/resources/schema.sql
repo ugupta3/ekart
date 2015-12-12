@@ -1,30 +1,13 @@
 DROP SCHEMA IF EXISTS ekart;
 create SCHEMA ekart;
 USE ekart;
-CREATE TABLE ek_address (
-  id bigint(20)  AUTO_INCREMENT,
-  address_line1 varchar(255) NOT NULL,
-  address_line2 varchar(255),
-  city varchar(255) NOT NULL,
-  email_address varchar(255) ,
-  name varchar(255) ,
-  is_active BOOLEAN,
-  is_default BOOLEAN,
-  is_mailing BOOLEAN,
-  postal_code varchar(255),
-  phone VARCHAR(12),
-  country varchar(255) DEFAULT 'INDIA',
-  state varchar(25),
-  PRIMARY KEY (id)
-  );
 
-  CREATE TABLE `ek_privilege` (
+CREATE TABLE `ek_privilege` (
      `id` bigint(20) NOT NULL AUTO_INCREMENT,
      `name` varchar(255) DEFAULT NULL,
      PRIMARY KEY (`id`)
-   );
-
-  CREATE TABLE `ek_user_role` (
+);
+CREATE TABLE `ek_user_role` (
      `id` bigint(20) NOT NULL AUTO_INCREMENT,
      `name` varchar(255) DEFAULT NULL,
      `privilege_id` bigint(20),
@@ -43,12 +26,28 @@ CREATE TABLE ek_address (
    `token_expired` bit(1) NOT NULL,
    `created_at` datetime DEFAULT NULL,
    `updated_at` datetime DEFAULT NULL,
-   `address_id`bigint(20) NOT NULL,
     role_id bigint(20) NOT NULL,
    CONSTRAINT  FOREIGN KEY (`role_id`) REFERENCES `ek_user_role` (`id`),
-   CONSTRAINT  FOREIGN KEY (`address_id`) REFERENCES `ek_address` (`id`),
    PRIMARY KEY (`id`)
  );
+ CREATE TABLE ek_address (
+   id bigint(20)  AUTO_INCREMENT,
+   address_line1 varchar(255) NOT NULL,
+   address_line2 varchar(255),
+   city varchar(255) NOT NULL,
+   email_address varchar(255) ,
+   name varchar(255) ,
+   is_active BOOLEAN,
+   is_default BOOLEAN,
+   is_mailing BOOLEAN,
+   postal_code varchar(255),
+   phone VARCHAR(12),
+   country varchar(255) DEFAULT 'INDIA',
+   state varchar(25),
+   customer_id bigint(20),
+   PRIMARY KEY (id),
+    CONSTRAINT  FOREIGN KEY (`customer_id`) REFERENCES `ek_user` (`id`)
+   );
  CREATE TABLE `ek_verification_token` (
       `id` bigint(20) NOT NULL AUTO_INCREMENT,
       `expiry_date` datetime DEFAULT NULL,

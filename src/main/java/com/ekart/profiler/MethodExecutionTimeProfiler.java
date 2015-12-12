@@ -1,5 +1,6 @@
-package com.ekart.common;
+package com.ekart.profiler;
 
+import com.ekart.cache.CacheManagerCheck;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
  */
 @Aspect
 @Component
-public class EkartProfiler {
+public class MethodExecutionTimeProfiler {
 
     private static final Logger logger = LoggerFactory
             .getLogger(CacheManagerCheck.class);
