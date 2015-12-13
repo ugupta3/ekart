@@ -4,9 +4,8 @@ import com.ekart.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
-import java.math.BigInteger;
 
-public interface OrderRepository extends JpaRepository<Order, BigInteger> {
+public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    Order getOpenOrderByCustomerId(BigInteger id);
+    Order   getOrderByCustomerIdAndStatus(Long id,String status);
 }

@@ -3,11 +3,11 @@ package com.ekart.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.math.BigInteger;
+
 
 public class ProductResponse {
     @JsonProperty
-    private BigInteger productId;
+    private Long productId;
     @JsonProperty
     private String imageUrl;
     @JsonProperty
@@ -17,10 +17,10 @@ public class ProductResponse {
     @JsonProperty
     private double price;
     @JsonProperty
-    private BigInteger merchantId;
+    private Long merchantId;
 
 
-    public ProductResponse(BigInteger productId, String imageUrl, String productName, String itemLocation,double price, BigInteger merchantId) {
+    public ProductResponse(Long productId, String imageUrl, String productName, String itemLocation,double price, Long merchantId) {
         this.productId = productId;
         this.imageUrl = imageUrl;
         this.productName = productName;
@@ -29,7 +29,7 @@ public class ProductResponse {
         this.merchantId = merchantId;
     }
 
-    public BigInteger getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
@@ -49,11 +49,11 @@ public class ProductResponse {
         return price;
     }
 
-    public BigInteger getMerchantId() {
+    public Long getMerchantId() {
         return merchantId;
     }
 
-    public void setMerchantId(BigInteger merchantId) {
+    public void setMerchantId(Long merchantId) {
         this.merchantId = merchantId;
     }
 }

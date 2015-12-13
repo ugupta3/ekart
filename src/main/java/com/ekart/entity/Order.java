@@ -2,8 +2,7 @@ package com.ekart.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.math.BigInteger;
+import java.util.*;
 
 
 /**
@@ -14,11 +13,9 @@ import java.math.BigInteger;
 
 @NamedQueries(
         {       @NamedQuery(name =  "Order.findAll", query = "SELECT o FROM Order o"),
-                @NamedQuery(name =  "Order.getOpenOrderByCustomerId" , query = " SELECT o FROM Order o" +
-                                    " where o.orderStatus='1'"+
-                                    " AND"+
-                                    " o.customerId = ?1"
-                            )
+                @NamedQuery(name =  "Order.getOrderByCustomerIdAndStatus" , query = " SELECT o FROM Order o" +
+                                    " where o.customerId = ?1 AND o.orderStatus=?2"
+                )
         }
 )
 public class Order {
@@ -26,10 +23,10 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "order_id", unique = true, nullable = false)
-    private BigInteger orderId;
+    private Long orderId;
 
     @Column(name = "customer_id")
-    private BigInteger customerId;
+    private Long customerId;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date_created")
@@ -53,28 +50,32 @@ public class Order {
     private BigDecimal orderTotal;
 
     @Column(name = "session_id")
-    private BigInteger sessionId;
+    private Long sessionId;
 
     @Column(name = "shipping_cost", precision = 10, scale = 5)
     private BigDecimal shippingCost;
 
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "order")
+    List<OrderItem> orderItems;
+
     public Order() {
+        this.orderItems = new ArrayList<OrderItem>();
     }
 
-    public BigInteger getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(BigInteger orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 
 
-    public BigInteger getCustomerId() {
+    public Long getCustomerId() {
         return this.customerId;
     }
 
-    public void setCustomerId(BigInteger customerId) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 
@@ -126,11 +127,11 @@ public class Order {
         this.orderTotal = orderTotal;
     }
 
-    public BigInteger getSessionId() {
+    public Long getSessionId() {
         return this.sessionId;
     }
 
-    public void setSessionId(BigInteger sessionId) {
+    public void setSessionId(Long sessionId) {
         this.sessionId = sessionId;
     }
 
@@ -140,6 +141,15 @@ public class Order {
 
     public void setShippingCost(BigDecimal shippingCost) {
         this.shippingCost = shippingCost;
+    }
+
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
 }

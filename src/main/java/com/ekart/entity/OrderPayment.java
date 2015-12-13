@@ -2,7 +2,6 @@ package com.ekart.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 
 /**
@@ -18,10 +17,10 @@ public class OrderPayment  {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="order_payment_id", unique=true, nullable=false)
-	private BigInteger orderPaymentId;
+	private Long orderPaymentId;
 
 	@Column(name="address_id")
-	private BigInteger addressId;
+	private Long addressId;
 
 	@Column(precision=10, scale=5)
 	private BigDecimal amount;
@@ -32,7 +31,7 @@ public class OrderPayment  {
 	private String gatewayType;
 
 	@Column(name="order_id")
-	private BigInteger orderId;
+	private Long orderId;
 
 	@Column(name="payment_type", nullable=false, length=255)
 	private String paymentType;
@@ -45,11 +44,11 @@ public class OrderPayment  {
 	}
 
 
-	public BigInteger getAddressId() {
+	public Long getAddressId() {
 		return this.addressId;
 	}
 
-	public void setAddressId(BigInteger addressId) {
+	public void setAddressId(Long addressId) {
 		this.addressId = addressId;
 	}
 
@@ -70,11 +69,11 @@ public class OrderPayment  {
 		this.gatewayType = gatewayType;
 	}
 
-	public BigInteger getOrderId() {
+	public Long getOrderId() {
 		return this.orderId;
 	}
 
-	public void setOrderId(BigInteger orderId) {
+	public void setOrderId(Long orderId) {
 		this.orderId = orderId;
 	}
 

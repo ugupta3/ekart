@@ -1,16 +1,17 @@
 package com.ekart.services;
 
-import com.ekart.entity.Order;
-import com.ekart.entity.OrderItem;
-import com.ekart.entity.Pricing;
-import com.ekart.entity.MerchantProductKey;
+import com.ekart.constants.OrderStatus;
+import com.ekart.entity.*;
 import com.ekart.repositories.OrderItemRepository;
 import com.ekart.repositories.OrderRepository;
 import com.ekart.repositories.PricingRepository;
+import com.ekart.response.ProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Named;
-import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by umam on 11/26/15.
@@ -36,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getOrderById(BigInteger id) {
+    public Order getOrderById(Long id) {
         return orderRepository.findOne(id);
     }
 
@@ -45,14 +46,24 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.save(order);
     }
 
-    public Order getOpenOrderByCustomerId(BigInteger customerId)
+    public Order getOpenOrderByCustomerId(Long customerId)
     {
-        return orderRepository.getOpenOrderByCustomerId(customerId);
+        return this.getOrderByCustomerIdAndStatus(customerId, OrderStatus.OPEN.stringValue());
+    }
+
+
+    public Order getOrderByCustomerIdAndStatus(Long customerId, String status)
+    {
+        return orderRepository.getOrderByCustomerIdAndStatus(customerId,status);
+    }
+
+    public OrderItem getOrderItemById(OrderItemKey itemKey) {
+        return orderItemRepository.findOne(itemKey);
     }
 
     public OrderItem saveOrderItem(OrderItem orderItem)
     {
-        Pricing pricing = pricingRepository.findOne(new MerchantProductKey(orderItem.getProductId(),orderItem.getMerchantId()));
+        Pricing pricing = pricingRepository.findOne(new MerchantProductKey(orderItem.getId().getProductId(),orderItem.getId().getMerchantId()));
         orderItem.setSellPrice(pricing.getSellPrice());
         orderItem.setEkPercentage(pricing.getEkPercentagek());
         orderItem.setMerchantPrice(pricing.getMerchantPrice());
@@ -60,5 +71,14 @@ public class OrderServiceImpl implements OrderService {
         return orderItemRepository.save(orderItem);
     }
 
+    @Override
+    public List<OrderItem>  listAllOpenOrderItems( Long customerId){
+        List<OrderItem> orderItemResponses = new ArrayList<>();
 
+       Order openOrder = this.getOpenOrderByCustomerId(customerId);
+       if(openOrder != null) {
+           orderItemResponses = orderItemRepository.findByOrderId(openOrder.getOrderId());
+                }
+        return orderItemResponses;
+    }
 }

@@ -6,8 +6,6 @@ import com.ekart.repositories.ProductRepository;
 import com.ekart.response.ProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -55,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public Product getProductById(BigInteger id) {
+    public Product getProductById(Long id) {
         return productRepository.findOne(id);
     }
 

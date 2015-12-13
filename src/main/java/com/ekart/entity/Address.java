@@ -1,7 +1,6 @@
 package com.ekart.entity;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.util.List;
 
 
@@ -14,7 +13,7 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "address_id", unique = true, nullable = false)
-    private BigInteger addressId;
+    private Long addressId;
 
     @Column(name = "address_line1", nullable = false, length = 255)
     private String addressLine1;
@@ -59,11 +58,11 @@ public class Address {
     public Address() {
     }
 
-    public BigInteger getAddressId() {
+    public Long getAddressId() {
         return addressId;
     }
 
-    public void setAddressId(BigInteger addressId) {
+    public void setAddressId(Long addressId) {
         this.addressId = addressId;
     }
 

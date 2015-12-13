@@ -1,6 +1,5 @@
 package com.ekart.entity;
 
-import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.*;
 
@@ -23,7 +22,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "product_id", unique = true, nullable = false)
-    private BigInteger productId;
+    private Long productId;
     @Column(name = "image_url")
     private String imageUrl;
     @Column(name = "manufacturer")
@@ -32,7 +31,7 @@ public class Product {
     @Column(name = "product_name")
     private String productName;
     @Column(name = "category_id")
-    private BigInteger categoryId;
+    private Long categoryId;
 
     @ManyToOne
     @JoinColumn(name = "category_id",insertable =false ,updatable = false)
@@ -45,7 +44,7 @@ public class Product {
     public Product() {
     }
 
-    public void setProductId(BigInteger productId) {
+    public void setProductId(Long productId) {
         this.productId = productId;
     }
 
@@ -61,7 +60,7 @@ public class Product {
         this.productName = productName;
     }
 
-    public BigInteger getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
@@ -77,11 +76,11 @@ public class Product {
         return productName;
     }
 
-    public BigInteger getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(BigInteger categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 

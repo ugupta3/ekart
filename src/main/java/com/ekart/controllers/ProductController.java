@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.math.BigInteger;
 
 @Controller
 public class ProductController {
@@ -29,13 +28,13 @@ public class ProductController {
     }
 
     @RequestMapping("product/{id}")
-    public String showProduct(@PathVariable BigInteger id, Model model){
+    public String showProduct(@PathVariable Long id, Model model){
         model.addAttribute("product", productService.getProductById(id));
         return "productshow";
     }
 
     @RequestMapping("product/edit/{id}")
-    public String edit(@PathVariable BigInteger id, Model model){
+    public String edit(@PathVariable Long id, Model model){
         model.addAttribute("product", productService.getProductById(id));
         return "productform";
     }

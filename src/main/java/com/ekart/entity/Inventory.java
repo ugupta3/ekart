@@ -1,7 +1,6 @@
 package com.ekart.entity;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 
 
 /**
@@ -16,10 +15,10 @@ public class Inventory {
     private MerchantProductKey id;
 
     @Column(name = "inventory_id")
-    private BigInteger inventoryId;
+    private Long inventoryId;
 
     @Column(name = "quantity_in_hand", nullable = false)
-    private BigInteger quantityInHand;
+    private Long quantityInHand;
 
     @OneToOne(mappedBy="inventory")
     private Pricing pricing;
@@ -27,19 +26,19 @@ public class Inventory {
     public Inventory() {
     }
 
-    public BigInteger getInventoryId() {
+    public Long getInventoryId() {
         return inventoryId;
     }
 
-    public void setInventoryId(BigInteger inventoryId) {
+    public void setInventoryId(Long inventoryId) {
         this.inventoryId = inventoryId;
     }
 
-    public BigInteger getQuantityInHand() {
+    public Long getQuantityInHand() {
         return this.quantityInHand;
     }
 
-    public void setQuantityInHand(BigInteger quantityInHand) {
+    public void setQuantityInHand(Long quantityInHand) {
         this.quantityInHand = quantityInHand;
     }
 

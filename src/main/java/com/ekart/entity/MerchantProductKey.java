@@ -1,7 +1,6 @@
 package com.ekart.entity;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import javax.persistence.*;
 
 /**
@@ -13,31 +12,31 @@ public class MerchantProductKey implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "product_id", unique = true, nullable = false)
-    private BigInteger productId;
+    private Long productId;
 
     @Column(name = "merchant_id", unique = true, nullable = false)
-    private BigInteger merchantId;
+    private Long merchantId;
 
     public MerchantProductKey() {
     }
-    public MerchantProductKey(BigInteger productId, BigInteger merchantId) {
+    public MerchantProductKey(Long productId, Long merchantId) {
         this.productId = productId;
         this.merchantId = merchantId;
     }
 
-    public BigInteger getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
-    public void setProductId(BigInteger productId) {
+    public void setProductId(Long productId) {
         this.productId = productId;
     }
 
-    public BigInteger getMerchantId() {
+    public Long getMerchantId() {
         return merchantId;
     }
 
-    public void setMerchantId(BigInteger merchantId) {
+    public void setMerchantId(Long merchantId) {
         this.merchantId = merchantId;
     }
 
