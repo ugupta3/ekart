@@ -3,6 +3,7 @@ package com.ekart.account.security.rest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.util.UrlPathHelper;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -56,27 +57,36 @@ public final class TokenAuthenticationFilter extends GenericFilterBean {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        boolean authenticated = checkToken(httpRequest, httpResponse);
+        String resourcePath = new UrlPathHelper().getPathWithinApplication(httpRequest);
 
-        if (canRequestProcessingContinue(httpRequest)) {
-            // If we're not authenticated, we don't bother with logout at all.
-            // Logout does not work in the same request with login - this does not make sense,
-            // because logout works with token and login returns it.
-            if (authenticated) {
-                checkLogout(httpRequest);
-            }
+        boolean authenticated = checkTokenForAuthentication(httpRequest, httpResponse) ||
+                checkTokenUsingLogin(httpRequest, httpResponse);
+        if (authenticated) {
 
-            // Login works just fine even when we provide token that is valid up to this request, because then we get a new one.
-            checkLogin(httpRequest, httpResponse);
-        }
+            if (resourcePath.equals("loginWithEmail"))
+                return;
 
-        if (canRequestProcessingContinue(httpRequest)) {
+            System.out.println(" === AUTHENTICATION: " + SecurityContextHolder.getContext().getAuthentication());
             chain.doFilter(request, response);
         }
 
-        System.out.println(" === AUTHENTICATION: " + SecurityContextHolder.getContext().getAuthentication());
-        chain.doFilter(request, response);
     }
+
+    private Boolean checkTokenUsingLogin(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
+        String username = httpRequest.getHeader(HEADER_USERNAME);
+        String password = httpRequest.getHeader(HEADER_PASSWORD);
+        TokenInfo tokenInfo = authenticationService.authenticate(username, password);
+        if (tokenInfo != null) {
+            httpResponse.setHeader(HEADER_TOKEN, tokenInfo.getToken());
+            return true;
+
+        } else {
+            httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Ekart Accesses Denied");
+            return false;
+        }
+
+    }
+
 
     private void checkLogin(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
         String authorization = httpRequest.getHeader("Authorization");
@@ -85,10 +95,10 @@ public final class TokenAuthenticationFilter extends GenericFilterBean {
 
         if (authorization != null) {
             checkBasicAuthorization(authorization, httpResponse);
-            doNotContinueWithRequestProcessing(httpRequest);
+            //doNotContinueWithRequestProcessing(httpRequest);
         } else if (username != null && password != null) {
             checkUsernameAndPassword(username, password, httpResponse);
-            doNotContinueWithRequestProcessing(httpRequest);
+            //doNotContinueWithRequestProcessing(httpRequest);
         }
     }
 
@@ -111,19 +121,13 @@ public final class TokenAuthenticationFilter extends GenericFilterBean {
     }
 
     private void checkUsernameAndPassword(String username, String password, HttpServletResponse httpResponse) throws IOException {
-        TokenInfo tokenInfo = authenticationService.authenticate(username, password);
-        if (tokenInfo != null) {
-            httpResponse.setHeader(HEADER_TOKEN, tokenInfo.getToken());
-            // TODO set other token information possible: IP, ...
-        } else {
-            httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-        }
+
     }
 
     /**
      * Returns true, if request contains valid authentication token.
      */
-    private boolean checkToken(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
+    private boolean checkTokenForAuthentication(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
         String token = httpRequest.getHeader(HEADER_TOKEN);
         if (token == null) {
             return false;

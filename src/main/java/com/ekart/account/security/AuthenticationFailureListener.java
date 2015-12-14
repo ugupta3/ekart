@@ -7,7 +7,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AuthenticationFailureListener implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
+public class AuthenticationFailureListener implements
+        ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
 
     @Autowired
     private LoginAttemptService loginAttemptService;
