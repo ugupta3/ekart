@@ -21,4 +21,5 @@ public class JerseyConfig extends ResourceConfig {
         register(UserRegistrationResource.class);
         register(UserLoginResource.class);
     }
+
 }

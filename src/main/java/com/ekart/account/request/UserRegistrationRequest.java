@@ -1,15 +1,12 @@
 package com.ekart.account.request;
 
-import com.ekart.account.validation.PasswordMatches;
-import com.ekart.account.validation.ValidEmail;
-import com.ekart.account.validation.ValidPassword;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.ws.rs.FormParam;
 
-@PasswordMatches
+
 public class UserRegistrationRequest {
     @NotNull
     @Size(min = 1)
@@ -21,7 +18,6 @@ public class UserRegistrationRequest {
     @FormParam("lastName")
     private String lastName;
 
-    @ValidPassword
     @FormParam("password")
     private String password;
 
@@ -30,7 +26,6 @@ public class UserRegistrationRequest {
     @FormParam("matchingPassword")
     private String matchingPassword;
 
-    @ValidEmail
     @NotNull
     @Size(min = 1)
     @FormParam("email")

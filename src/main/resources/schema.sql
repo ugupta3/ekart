@@ -18,12 +18,11 @@ CREATE TABLE `ek_user_role` (
  CREATE TABLE `ek_user` (
    `id` bigint(20) AUTO_INCREMENT,
    `email` varchar(100) NOT NULL,
-   `enabled` bit(1) NOT NULL,
+   `is_active` bit(1) NOT NULL,
    `first_name` varchar(255) DEFAULT NULL,
    `last_name` varchar(255) DEFAULT NULL,
    `password` varchar(60) DEFAULT NULL,
    `phone` varchar(255) DEFAULT NULL,
-   `token_expired` bit(1) NOT NULL,
    `created_at` datetime DEFAULT NULL,
    `updated_at` datetime DEFAULT NULL,
     role_id bigint(20) NOT NULL,
@@ -166,3 +165,4 @@ CREATE TABLE ek_order_payment_transaction (
   -- CONSTRAINT  FOREIGN KEY (order_payment) REFERENCES ek_order_payment (ORDER_PAYMENT_ID),
   -- CONSTRAINT  FOREIGN KEY (parent_transaction) REFERENCES ek_order_payment_transaction (payment_transaction_id)
 );
+

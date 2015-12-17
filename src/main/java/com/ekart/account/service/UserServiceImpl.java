@@ -8,14 +8,14 @@ import com.ekart.account.repositories.RoleRepository;
 import com.ekart.account.repositories.UserRepository;
 import com.ekart.account.repositories.VerificationTokenRepository;
 import com.ekart.account.request.UserRegistrationRequest;
-import com.ekart.account.response.GenericResponse;
-import com.ekart.account.validation.EmailExistsException;
+import com.ekart.security.AuthoritiesConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
 import java.util.UUID;
 
 @Service
@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private VerificationTokenRepository tokenRepository;
+    private VerificationTokenRepository verificationTokenRepository;
 
     @Autowired
     private PasswordResetTokenRepository passwordTokenRepository;
@@ -37,29 +37,32 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
 
     @Override
-    public GenericResponse registerNewUserAccount(final UserRegistrationRequest userRegistrationRequest) {
+    public ResponseEntity<String> registerNewUserAccount(final UserRegistrationRequest userRegistrationRequest) {
 
         if (emailExist(userRegistrationRequest.getEmail())) {
 
-            return new GenericResponse(new EmailExistsException("There is an account with that email adress: " +
-                    userRegistrationRequest.getEmail())
-                    .getMessage());
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(
+                    "There is an account with that email adress: " +
+                            userRegistrationRequest.getEmail());
         } else {
             final User user = new User();
             user.setFirstName(userRegistrationRequest.getFirstName());
             user.setLastName(userRegistrationRequest.getLastName());
             user.setPassword(passwordEncoder.encode(userRegistrationRequest.getPassword()));
             user.setEmail(userRegistrationRequest.getEmail());
-            user.setRole_id(roleRepository.findByName("ROLE_USER").getId());
+            user.setRole_id(roleRepository.findByName(AuthoritiesConstants.USER).getId());
+            user.setIsActive(true);
             userRepository.save(user);
-            return new GenericResponse("Confirmation Email has sent please check your mail Inbox and confirm");
+            return ResponseEntity.ok(
+                    "Confirmation Email has sent please check your mail Inbox and confirm ");
+
         }
     }
 
 
     @Override
     public User getUser(final String verificationToken) {
-        final User user = tokenRepository.findByToken(verificationToken).getUser();
+        final User user = verificationTokenRepository.findByToken(verificationToken).getUser();
         return user;
     }
 
@@ -70,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public VerificationToken getVerificationToken(final String VerificationToken) {
-        return tokenRepository.findByToken(VerificationToken);
+        return verificationTokenRepository.findByToken(VerificationToken);
     }
 
     @Override
@@ -86,14 +89,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createVerificationTokenForUser(final User user, final String token) {
         final VerificationToken myToken = new VerificationToken(token, user);
-        tokenRepository.save(myToken);
+        verificationTokenRepository.save(myToken);
     }
 
     @Override
     public VerificationToken generateNewVerificationToken(final String existingVerificationToken) {
-        VerificationToken vToken = tokenRepository.findByToken(existingVerificationToken);
+        VerificationToken vToken = verificationTokenRepository.findByToken(existingVerificationToken);
         vToken.updateToken(UUID.randomUUID().toString());
-        vToken = tokenRepository.save(vToken);
+        vToken = verificationTokenRepository.save(vToken);
         return vToken;
     }
 

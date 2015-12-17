@@ -5,12 +5,12 @@ import com.ekart.account.entity.PasswordResetToken;
 import com.ekart.account.entity.User;
 import com.ekart.account.entity.VerificationToken;
 import com.ekart.account.request.UserRegistrationRequest;
-import com.ekart.account.response.GenericResponse;
+import org.springframework.http.ResponseEntity;
 
 
 public interface UserService {
 
-    GenericResponse registerNewUserAccount(UserRegistrationRequest accountDto);
+    ResponseEntity<String> registerNewUserAccount(UserRegistrationRequest accountDto);
 
     User getUser(String verificationToken);
 

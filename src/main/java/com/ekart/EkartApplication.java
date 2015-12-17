@@ -44,6 +44,7 @@ public class EkartApplication extends SpringBootServletInitializer {
         new EkartApplication()
                 .configure(new SpringApplicationBuilder(EkartApplication.class))
                 .run(args);
+
     }
 
 }

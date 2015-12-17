@@ -35,9 +35,7 @@ public class User {
     @Column(nullable = false)
     private long role_id;
     @Column
-    private boolean enabled;
-    @Column
-    private boolean tokenExpired;
+    private boolean isActive;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
@@ -49,13 +47,22 @@ public class User {
     private Date updatedAt;
 
     @OneToOne(orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", referencedColumnName = "role_id", insertable = false, updatable = false)
-    private Role roles;
+    @JoinColumn(name = "role_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Role role;
 
     @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "id", insertable = false, updatable = false)
     private List<Address> address;
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = updatedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = new Date();
+    }
 
     public User() {
     }
@@ -152,28 +159,21 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-
-    public boolean isEnabled() {
-        return enabled;
+    public Role getRole() {
+        return role;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
-    public boolean isTokenExpired() {
-        return tokenExpired;
+
+    public boolean isActive() {
+        return isActive;
     }
 
-    public void setTokenExpired(boolean tokenExpired) {
-        this.tokenExpired = tokenExpired;
-    }
-
-    public Role getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Role roles) {
-        this.roles = roles;
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
 }
+

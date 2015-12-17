@@ -1,10 +1,20 @@
 package com.ekart.account.handler;
 
 import com.ekart.account.entity.User;
+import com.ekart.account.repositories.UserRepository;
 import com.ekart.account.service.UserService;
+import com.ekart.security.xauth.Token;
+import com.ekart.security.xauth.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.core.Response;
 
@@ -13,19 +23,38 @@ import javax.ws.rs.core.Response;
  */
 @Named
 public class UserLoginHandler {
+    @Inject
+    private UserDetailsService userDetailsService;
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    @Inject
+    private AuthenticationManager authenticationManager;
 
-    public Boolean checkUserCredentialByEmail(String email, String password) {
-        User user = userService.findUserByEmail(email);
-        return passwordEncoder.matches(password,user.getPassword());
+    @Inject
+    private TokenProvider tokenProvider;
+
+
+    @Inject
+    private UserRepository userRepository;
+
+
+    public Token createTokenUsingEmailAndPassword(String email, String password) {
+
+        try {
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(email, password);
+            Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(email);
+            return tokenProvider.createToken(userDetails);
+        } catch (Exception e) {
+            return new Token(null,0);
+        }
 
     }
-    public Boolean checkUserCredentialByPhone(long phone, String password) {
-        User user = userService.findUserByPhone(phone);
-        return passwordEncoder.matches(password,user.getPassword());
+
+    public Token createTokenUsingPhoneAndPassword(long phone, String password) {
+
+        String email = userRepository.findByPhone(phone).getEmail();
+        return createTokenUsingEmailAndPassword(email, password);
     }
 }

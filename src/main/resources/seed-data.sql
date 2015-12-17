@@ -28,5 +28,17 @@ VALUES
 	(3, 1, 100, 20, 120);
 
 
+INSERT INTO `ek_privilege` (`id`, `name`)
+VALUES
+	(1, 'READ');
+
+
+INSERT INTO `ek_user_role` (`id`, `name`, `privilege_id`)
+VALUES
+	(1, 'ROLE_USER', 1);
+
+INSERT INTO `ek_user` (`id`, `email`, `is_active`, `first_name`, `last_name`, `password`, `phone`, `created_at`, `updated_at`, `role_id`)
+VALUES
+	(2, 'admin@gmail.com', 00000001, 'Uma', 'k', '$2a$10$J5GvqJJuQTy2Gqa9wu9Ld.jBA3.VueE8C9C1UVlCAb04KD/Q0I2q2', NULL, '2015-12-16 19:49:29', '2015-12-16 19:49:29', 1);
 
 
