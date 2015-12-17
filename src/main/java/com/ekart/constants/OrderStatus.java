@@ -10,14 +10,14 @@ public enum OrderStatus {
 
 
     OrderStatus(String str) {
-        orderStatusStngValue = str;
+        orderStatusStrngValue = str;
     }
 
     public String stringValue() {
-        return orderStatusStngValue;
+        return orderStatusStrngValue;
     }
 
-    private String orderStatusStngValue;
+    private String orderStatusStrngValue;
 
 
 }

@@ -3,6 +3,8 @@ package com.ekart.api;
 import com.ekart.response.ProductResponse;
 import com.ekart.services.ProductService;
 import com.ekart.services.ProductServiceImpl;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import javax.inject.Inject;
 import javax.inject.Qualifier;

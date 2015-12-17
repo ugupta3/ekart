@@ -17,10 +17,12 @@ public class ProductResponse {
     @JsonProperty
     private double price;
     @JsonProperty
-    private BigInteger merchantId;
+    private long
+            merchantId;
 
 
-    public ProductResponse(BigInteger productId, String imageUrl, String productName, String itemLocation,double price, BigInteger merchantId) {
+    public ProductResponse(BigInteger productId, String imageUrl, String productName,
+                           String itemLocation,double price, long merchantId) {
         this.productId = productId;
         this.imageUrl = imageUrl;
         this.productName = productName;
@@ -49,11 +51,11 @@ public class ProductResponse {
         return price;
     }
 
-    public BigInteger getMerchantId() {
+    public long getMerchantId() {
         return merchantId;
     }
 
-    public void setMerchantId(BigInteger merchantId) {
+    public void setMerchantId(long merchantId) {
         this.merchantId = merchantId;
     }
 }
