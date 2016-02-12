@@ -1,7 +1,6 @@
 package com.ekart.entity;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 
 
 /**
@@ -9,27 +8,40 @@ import java.math.BigInteger;
  * 
  */
 @Entity
-@Table(name="et_order_item")
-@NamedQuery(name="OrderItem.findAll", query="SELECT o FROM OrderItem o")
+@Table(name="ek_order_item")
+@NamedQueries({
+		@NamedQuery(name = "OrderItem.findAll", query = "SELECT o FROM OrderItem o"),
+		@NamedQuery(name = "OrderItem.findByOrderId", query = "SELECT o FROM OrderItem o" +
+				" WHERE order_id = ?1"
+		)
+}
+)
+
 public class OrderItem  {
 
-	@Id
+	/*@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="order_item_id", unique=true, nullable=false)
-	private BigInteger orderItemId;
+	private Long orderItemId;*/
 
-	@Column(name="et_percentage")
-	private double etPercentage;
+	@EmbeddedId
+	private OrderItemKey id;
 
-	@Column(name="merchant_id", nullable=false)
-	private BigInteger merchantId;
+    @ManyToOne
+	@JoinColumn(name = "order_id",insertable =false ,updatable = false)
+	private Order order;
 
+	@Column(name="ek_percentage")
+	private double ekPercentage;
+
+
+/*
 	@Column(name="order_id", nullable=false)
-	private BigInteger orderId;
+	private Long orderId;
 
 	@Column(name="product_id", nullable=false)
-	private BigInteger productId;
-
+	private Long productId;
+*/
 	private int quantity;
 
 	@Column(name="sell_price")
@@ -44,12 +56,12 @@ public class OrderItem  {
 	public OrderItem() {
 	}
 
-	public BigInteger getOrderItemId() {
-		return orderItemId;
+	public OrderItemKey getId() {
+		return id;
 	}
 
-	public void setOrderItemId(BigInteger orderItemId) {
-		this.orderItemId = orderItemId;
+	public void setId(OrderItemKey id) {
+		this.id = id;
 	}
 
 	public double getMerchantPrice() {
@@ -60,36 +72,12 @@ public class OrderItem  {
 		this.merchantPrice = merchantPrice;
 	}
 
-	public double getEtPercentage() {
-		return this.etPercentage;
+	public double getEkPercentage() {
+		return this.ekPercentage;
 	}
 
-	public void setEtPercentage(double etPercentage) {
-		this.etPercentage = etPercentage;
-	}
-
-	public BigInteger getMerchantId() {
-		return this.merchantId;
-	}
-
-	public void setMerchantId(BigInteger merchantId) {
-		this.merchantId = merchantId;
-	}
-
-	public BigInteger getOrderId() {
-		return this.orderId;
-	}
-
-	public void setOrderId(BigInteger orderId) {
-		this.orderId = orderId;
-	}
-
-	public BigInteger getProductId() {
-		return this.productId;
-	}
-
-	public void setProductId(BigInteger productId) {
-		this.productId = productId;
+	public void setEkPercentage(double ekPercentage) {
+		this.ekPercentage = ekPercentage;
 	}
 
 	public int getQuantity() {
@@ -115,6 +103,15 @@ public class OrderItem  {
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
-
-
+	@Override
+	public boolean equals(Object obj){
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || obj.getClass() != this.getClass()){
+			return false;
+		}
+		OrderItem guest = (OrderItem) obj;
+		return this.getId().equals(((OrderItem) obj).getId());
+	}
 }

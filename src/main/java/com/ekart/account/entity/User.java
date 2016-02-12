@@ -1,10 +1,9 @@
 package com.ekart.account.entity;
 
 import com.ekart.entity.Address;
-import com.ekart.entity.Pricing;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(unique = true, nullable = false)
-    private long id;
+    private BigInteger id;
 
     private String firstName;
 
@@ -74,7 +73,7 @@ public class User {
         this.email = email;
     }
 
-    public void setId(long id) {
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
@@ -95,13 +94,10 @@ public class User {
     }
 
 
-    public Long getId() {
+    public BigInteger getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Date getCreatedAt() {
         return this.createdAt;

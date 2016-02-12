@@ -11,7 +11,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "ek_product")
 @NamedQueries(
-        {@NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
+        {
+                @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
                 @NamedQuery(name = "Product.getProductsByCategory", query = "SELECT p FROM Product p" +
                         " JOIN FETCH p.category  c " +
                         " JOIN FETCH p.pricing  prc " +
@@ -31,7 +32,7 @@ public class Product {
     @Column(name = "product_name")
     private String productName;
     @Column(name = "category_id")
-    private BigInteger categoryId;
+    private Long categoryId;
 
     @ManyToOne
     @JoinColumn(name = "category_id",insertable =false ,updatable = false)
@@ -76,11 +77,11 @@ public class Product {
         return productName;
     }
 
-    public BigInteger getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(BigInteger categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 

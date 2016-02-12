@@ -10,14 +10,18 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "ek_pricing")
-@NamedQuery(name = "Pricing.findAll", query = "SELECT p FROM Pricing p")
+@NamedQueries(
+        {
+            @NamedQuery(name = "Pricing.findAll", query = "SELECT p FROM Pricing p")
+        }
+)
 public class Pricing {
 
     @EmbeddedId
-    private PricingPK id;
+    private MerchantProductKey id;
 
     @Column(name = "ek_percentage")
-    private double etPercentage;
+    private double ekPercentage;
 
     @Column(name = "sell_price")
     private double sellPrice;
@@ -46,20 +50,20 @@ public class Pricing {
 
     }
 
-    public PricingPK getId() {
+    public MerchantProductKey getId() {
         return this.id;
     }
 
-    public void setId(PricingPK id) {
+    public void setId(MerchantProductKey id) {
         this.id = id;
     }
 
-    public double getEtPercentage() {
-        return this.etPercentage;
+    public double getEkPercentagek() {
+        return this.ekPercentage;
     }
 
-    public void setEtPercentage(double etPercentage) {
-        this.etPercentage = etPercentage;
+    public void setEkPercentage(double ekPercentage) {
+        this.ekPercentage = ekPercentage;
     }
 
     public double getSellPrice() {
