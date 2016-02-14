@@ -4,112 +4,107 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
-
 /**
  * The persistent class for the et_order_payment_transaction database table.
  * 
  */
 @Entity
-@Table(name="et_order_payment_transaction")
-@NamedQuery(name="OrderPaymentTransaction.findAll", query="SELECT o FROM OrderPaymentTransaction o")
-public class OrderPaymentTransaction  {
-	private static final long serialVersionUID = 1L;
+@Table(name = "et_order_payment_transaction")
+@NamedQuery(name = "OrderPaymentTransaction.findAll", query = "SELECT o FROM OrderPaymentTransaction o")
+public class OrderPaymentTransaction {
+   private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="payment_transaction_id", unique=true, nullable=false)
-	private String paymentTransactionId;
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   @Column(name = "payment_transaction_id", unique = true, nullable = false)
+   private String paymentTransactionId;
 
-	private byte archived;
+   private byte archived;
 
-	@Column(name="customer_ip_address", length=255)
-	private String customerIpAddress;
+   @Column(name = "customer_ip_address", length = 255)
+   private String customerIpAddress;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="date_recorded")
-	private Date dateRecorded;
+   @Temporal(TemporalType.TIMESTAMP)
+   @Column(name = "date_recorded")
+   private Date dateRecorded;
 
-	@Lob
-	@Column(name="raw_response")
-	private String rawResponse;
+   @Lob
+   @Column(name = "raw_response")
+   private String rawResponse;
 
-	private byte success;
+   private byte success;
 
-	@Column(name="transaction_amount", precision=10, scale=2)
-	private BigDecimal transactionAmount;
+   @Column(name = "transaction_amount", precision = 10, scale = 2)
+   private double transactionAmount;
 
-	@Column(name="transaction_type", length=255)
-	private String transactionType;
+   @Column(name = "transaction_type", length = 255)
+   private String transactionType;
 
+   public OrderPaymentTransaction() {
+   }
 
+   public String getPaymentTransactionId() {
+      return this.paymentTransactionId;
+   }
 
-	public OrderPaymentTransaction() {
-	}
+   public void setPaymentTransactionId(String paymentTransactionId) {
+      this.paymentTransactionId = paymentTransactionId;
+   }
 
-	public String getPaymentTransactionId() {
-		return this.paymentTransactionId;
-	}
+   public byte getArchived() {
+      return this.archived;
+   }
 
-	public void setPaymentTransactionId(String paymentTransactionId) {
-		this.paymentTransactionId = paymentTransactionId;
-	}
+   public void setArchived(byte archived) {
+      this.archived = archived;
+   }
 
-	public byte getArchived() {
-		return this.archived;
-	}
+   public String getCustomerIpAddress() {
+      return this.customerIpAddress;
+   }
 
-	public void setArchived(byte archived) {
-		this.archived = archived;
-	}
+   public void setCustomerIpAddress(String customerIpAddress) {
+      this.customerIpAddress = customerIpAddress;
+   }
 
-	public String getCustomerIpAddress() {
-		return this.customerIpAddress;
-	}
+   public Date getDateRecorded() {
+      return this.dateRecorded;
+   }
 
-	public void setCustomerIpAddress(String customerIpAddress) {
-		this.customerIpAddress = customerIpAddress;
-	}
+   public void setDateRecorded(Date dateRecorded) {
+      this.dateRecorded = dateRecorded;
+   }
 
-	public Date getDateRecorded() {
-		return this.dateRecorded;
-	}
+   public String getRawResponse() {
+      return this.rawResponse;
+   }
 
-	public void setDateRecorded(Date dateRecorded) {
-		this.dateRecorded = dateRecorded;
-	}
+   public void setRawResponse(String rawResponse) {
+      this.rawResponse = rawResponse;
+   }
 
-	public String getRawResponse() {
-		return this.rawResponse;
-	}
+   public byte getSuccess() {
+      return this.success;
+   }
 
-	public void setRawResponse(String rawResponse) {
-		this.rawResponse = rawResponse;
-	}
+   public void setSuccess(byte success) {
+      this.success = success;
+   }
 
-	public byte getSuccess() {
-		return this.success;
-	}
+   public double getTransactionAmount() {
+      return transactionAmount;
+   }
 
-	public void setSuccess(byte success) {
-		this.success = success;
-	}
+   public void setTransactionAmount(double transactionAmount) {
+      this.transactionAmount = transactionAmount;
+   }
 
-	public BigDecimal getTransactionAmount() {
-		return this.transactionAmount;
-	}
+   public String getTransactionType() {
+      return this.transactionType;
+   }
 
-	public void setTransactionAmount(BigDecimal transactionAmount) {
-		this.transactionAmount = transactionAmount;
-	}
-
-	public String getTransactionType() {
-		return this.transactionType;
-	}
-
-	public void setTransactionType(String transactionType) {
-		this.transactionType = transactionType;
-	}
-
-
+   public void setTransactionType(String transactionType) {
+      this.transactionType = transactionType;
+   }
 
 }

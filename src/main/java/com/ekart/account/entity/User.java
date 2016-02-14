@@ -1,13 +1,11 @@
 package com.ekart.account.entity;
 
 import com.ekart.entity.Address;
-import com.ekart.entity.Pricing;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
-
 
 /**
  * The persistent class for the et_user_account database table.
@@ -15,165 +13,150 @@ import java.util.List;
 @Entity
 @Table(name = "ek_user")
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(unique = true, nullable = false)
-    private long id;
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   @Column(unique = true, nullable = false)
+   private long id;
+   private String firstName;
+   private String lastName;
+   @Column(length = 60)
+   private String password;
+   @Column(nullable = false, length = 100)
+   private String email;
+   private String phone;
+   @Column(nullable = false)
+   private long role_id;
+   @Column
+   private boolean isActive;
+   @Temporal(TemporalType.TIMESTAMP)
+   @Column(name = "created_at")
+   private Date createdAt;
 
-    private String firstName;
+   @Temporal(TemporalType.TIMESTAMP)
+   @Column(name = "updated_at")
+   private Date updatedAt;
 
-    private String lastName;
+   @OneToOne(orphanRemoval = true, fetch = FetchType.LAZY)
+   @JoinColumn(name = "role_id", referencedColumnName = "id", insertable = false, updatable = false)
+   private Role role;
 
-    @Column(length = 60)
-    private String password;
+   @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER)
+   @JoinColumn(name = "customer_id", referencedColumnName = "id", insertable = false, updatable = false)
+   private List<Address> address;
 
-    @Column(nullable = false, length = 100)
-    private String email;
+   @PrePersist
+   protected void onCreate() {
+      createdAt = updatedAt = new Date();
+   }
 
-    private String phone;
+   @PreUpdate
+   protected void onUpdate() {
+      updatedAt = new Date();
+   }
 
-    @Column(nullable = false)
-    private long role_id;
-    @Column
-    private boolean isActive;
+   public User() {
+   }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at")
-    private Date createdAt;
+   public User(String lastName, String firstName, String password, String email) {
+      this.lastName = lastName;
+      this.firstName = firstName;
+      this.password = password;
+      this.email = email;
+   }
 
+   public long getRole_id() {
+      return role_id;
+   }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at")
-    private Date updatedAt;
+   public void setRole_id(long role_id) {
+      this.role_id = role_id;
+   }
 
-    @OneToOne(orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private Role role;
+   public List<Address> getAddress() {
+      return address;
+   }
 
-    @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private List<Address> address;
+   public void setAddress(List<Address> address) {
+      this.address = address;
+   }
 
-    @PrePersist
-    protected void onCreate() {
-        createdAt = updatedAt = new Date();
-    }
+   public long getId() {
+      return id;
+   }
 
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = new Date();
-    }
+   public void setId(long id) {
+      this.id = id;
+   }
 
-    public User() {
-    }
+   public Date getCreatedAt() {
+      return this.createdAt;
+   }
 
-    public User(String lastName, String firstName, String password, String email) {
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.password = password;
-        this.email = email;
-    }
+   public void setCreatedAt(Date createdAt) {
+      this.createdAt = createdAt;
+   }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+   public String getEmail() {
+      return this.email;
+   }
 
-    public long getRole_id() {
-        return role_id;
-    }
+   public void setEmail(String email) {
+      this.email = email;
+   }
 
-    public void setRole_id(long role_id) {
-        this.role_id = role_id;
-    }
+   public String getFirstName() {
+      return firstName;
+   }
 
-    public List<Address> getAddress() {
-        return address;
-    }
+   public void setFirstName(String firstName) {
+      this.firstName = firstName;
+   }
 
-    public void setAddress(List<Address> address) {
-        this.address = address;
-    }
+   public String getLastName() {
+      return lastName;
+   }
 
+   public void setLastName(String lastName) {
+      this.lastName = lastName;
+   }
 
-    public Long getId() {
-        return id;
-    }
+   public String getPassword() {
+      return password;
+   }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+   public void setPassword(String password) {
+      this.password = password;
+   }
 
-    public Date getCreatedAt() {
-        return this.createdAt;
-    }
+   public String getPhone() {
+      return phone;
+   }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
+   public void setPhone(String phone) {
+      this.phone = phone;
+   }
 
-    public String getEmail() {
-        return this.email;
-    }
+   public Date getUpdatedAt() {
+      return this.updatedAt;
+   }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+   public void setUpdatedAt(Date updatedAt) {
+      this.updatedAt = updatedAt;
+   }
 
-    public String getFirstName() {
-        return firstName;
-    }
+   public Role getRole() {
+      return role;
+   }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+   public void setRole(Role role) {
+      this.role = role;
+   }
 
-    public String getLastName() {
-        return lastName;
-    }
+   public boolean isActive() {
+      return isActive;
+   }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public Date getUpdatedAt() {
-        return this.updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setIsActive(boolean isActive) {
-        this.isActive = isActive;
-    }
+   public void setIsActive(boolean isActive) {
+      this.isActive = isActive;
+   }
 }
-

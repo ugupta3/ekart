@@ -6,169 +6,166 @@ import javax.persistence.*;
 import java.math.BigInteger;
 import java.util.List;
 
-
 /**
  * The persistent class for the et_address database table.
  */
 @Entity
 @Table(name = "ek_address")
 public class Address {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", unique = true, nullable = false)
-    private BigInteger addressId;
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   @Column(name = "id", unique = true, nullable = false)
+   private long addressId;
 
-    @Column(name = "address_line1", nullable = false, length = 255)
-    private String addressLine1;
+   @Column(name = "address_line1", nullable = false, length = 255)
+   private String addressLine1;
+   @Column(name = "address_line2", length = 255)
+   private String addressLine2;
 
-    @Column(name = "address_line2", length = 255)
-    private String addressLine2;
+   @Column(nullable = false, length = 255)
+   private String city;
 
-    @Column(nullable = false, length = 255)
-    private String city;
+   @Column(length = 255)
+   private String country;
 
-    @Column(length = 255)
-    private String country;
+   @Column(name = "email_address", length = 255)
+   private String emailAddress;
 
-    @Column(name = "email_address", length = 255)
-    private String emailAddress;
+   @Column(name = "is_active")
+   private Boolean isActive;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
+   @Column(name = "is_default")
+   private Boolean isDefault;
 
-    @Column(name = "is_default")
-    private Boolean isDefault;
+   @Column(name = "is_mailing")
+   private Boolean isMailing;
 
-    @Column(name = "is_mailing")
-    private Boolean isMailing;
+   @Column(length = 255)
+   private String name;
+   @Column
+   private String phone;
 
-    @Column(length = 255)
-    private String name;
-    @Column
-    private String phone;
+   @Column(name = "postal_code", length = 255)
+   private String postalCode;
 
-    @Column(name = "postal_code", length = 255)
-    private String postalCode;
+   @Column
+   private String state;
 
-    @Column
-    private String state;
+   @Column(name = "customer_id")
+   private long customerId;
 
-    @Column(name = "customer_id")
-    private BigInteger customerId;
+   public Address() {
+   }
 
+   public long getCustomerId() {
+      return customerId;
+   }
 
-    public Address() {
-    }
+   public void setCustomerId(long customerId) {
+      this.customerId = customerId;
+   }
 
-    public BigInteger getCustomerId() {
-        return customerId;
-    }
+   public Long getAddressId() {
+      return addressId;
+   }
 
-    public void setCustomerId(BigInteger customerId) {
-        this.customerId = customerId;
-    }
+   public void setAddressId(Long addressId) {
+      this.addressId = addressId;
+   }
 
-    public BigInteger getAddressId() {
-        return addressId;
-    }
+   public String getAddressLine1() {
+      return addressLine1;
+   }
 
-    public void setAddressId(BigInteger addressId) {
-        this.addressId = addressId;
-    }
+   public void setAddressLine1(String addressLine1) {
+      this.addressLine1 = addressLine1;
+   }
 
-    public String getAddressLine1() {
-        return addressLine1;
-    }
+   public String getAddressLine2() {
+      return addressLine2;
+   }
 
-    public void setAddressLine1(String addressLine1) {
-        this.addressLine1 = addressLine1;
-    }
+   public void setAddressLine2(String addressLine2) {
+      this.addressLine2 = addressLine2;
+   }
 
-    public String getAddressLine2() {
-        return addressLine2;
-    }
+   public String getCity() {
+      return city;
+   }
 
-    public void setAddressLine2(String addressLine2) {
-        this.addressLine2 = addressLine2;
-    }
+   public void setCity(String city) {
+      this.city = city;
+   }
 
-    public String getCity() {
-        return city;
-    }
+   public String getCountry() {
+      return country;
+   }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+   public void setCountry(String country) {
+      this.country = country;
+   }
 
-    public String getCountry() {
-        return country;
-    }
+   public String getEmailAddress() {
+      return emailAddress;
+   }
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
+   public void setEmailAddress(String emailAddress) {
+      this.emailAddress = emailAddress;
+   }
 
-    public String getEmailAddress() {
-        return emailAddress;
-    }
+   public Boolean getIsActive() {
+      return isActive;
+   }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
+   public void setIsActive(Boolean isActive) {
+      this.isActive = isActive;
+   }
 
-    public Boolean getIsActive() {
-        return isActive;
-    }
+   public Boolean getIsDefault() {
+      return isDefault;
+   }
 
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
+   public void setIsDefault(Boolean isDefault) {
+      this.isDefault = isDefault;
+   }
 
-    public Boolean getIsDefault() {
-        return isDefault;
-    }
+   public Boolean getIsMailing() {
+      return isMailing;
+   }
 
-    public void setIsDefault(Boolean isDefault) {
-        this.isDefault = isDefault;
-    }
+   public void setIsMailing(Boolean isMailing) {
+      this.isMailing = isMailing;
+   }
 
-    public Boolean getIsMailing() {
-        return isMailing;
-    }
+   public String getName() {
+      return name;
+   }
 
-    public void setIsMailing(Boolean isMailing) {
-        this.isMailing = isMailing;
-    }
+   public void setName(String name) {
+      this.name = name;
+   }
 
-    public String getName() {
-        return name;
-    }
+   public String getPostalCode() {
+      return postalCode;
+   }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+   public void setPostalCode(String postalCode) {
+      this.postalCode = postalCode;
+   }
 
-    public String getPostalCode() {
-        return postalCode;
-    }
+   public String getState() {
+      return state;
+   }
 
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
+   public void setState(String state) {
+      this.state = state;
+   }
 
-    public String getState() {
-        return state;
-    }
+   public String getPhone() {
+      return phone;
+   }
 
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+   public void setPhone(String phone) {
+      this.phone = phone;
+   }
 }

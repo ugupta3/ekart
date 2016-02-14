@@ -1,7 +1,6 @@
 package com.ekart.entity;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "category_id", unique = true, nullable = false)
-    private BigInteger categoryId;
+    private long categoryId;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "active_end_date")
@@ -37,11 +36,11 @@ public class Category {
     public Category() {
     }
 
-    public BigInteger getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(BigInteger categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 
